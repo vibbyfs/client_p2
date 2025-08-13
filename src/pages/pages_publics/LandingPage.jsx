@@ -2,8 +2,6 @@ import Navbar from "../../components/publics/Navbar";
 import Hero from "../../components/publics/Hero";
 import Features from "../../components/publics/Features";
 import HowItWorks from "../../components/publics/HowitWorks";
-import Testimonials from "../../components/publics/Testimonials";
-import Pricing from "../../components/publics/Pricing";
 import FAQ from "../../components/publics/Faq";
 import CTA from "../../components/publics/Cta";
 import Footer from "../../components/publics/Footer";
@@ -60,8 +58,6 @@ export default function LandingPage() {
       <Hero />
       <Features />
       <HowItWorks />
-      <Testimonials />
-      <Pricing />
       <FAQ />
       <CTA />
       <Footer />

@@ -1,7 +1,8 @@
-import { ArrowRight, BellRing } from "lucide-react";
+import { ArrowRight, BellRing, PhoneCall } from "lucide-react";
 import AnimationRegister from "../../components/dashboards/AnimationRegister";
 import LoginForm from "../../components/dashboards/LoginForm";
 import RegisterForm from "../../components/dashboards/RegisterForm";
+import { Link } from "react-router";
 
 export default function LoginPage() {
   function SkipLink() {
@@ -26,12 +27,24 @@ export default function LoginPage() {
               </div>
               <span className="font-semibold tracking-tight">TemanIngat</span>
             </a>
-            <a
-              href="#login"
-              className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-800 transition hover:bg-neutral-50"
-            >
-              Belum punya akun? Daftar <ArrowRight className="h-4 w-4" />
-            </a>
+            <div className="hidden items-center gap-6 md:flex">
+              {[{ label: "Back to Home", href: "#features" }].map((n) => (
+                <Link
+                  to="/"
+                  key={n.label}
+                  href={n.href}
+                  className="text-sm text-neutral-700 transition hover:text-orange-700"
+                >
+                  {n.label}
+                </Link>
+              ))}
+              <Link
+                to="/register"
+                className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-800 transition hover:bg-neutral-50"
+              >
+                Belum punya akun? Daftar <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </nav>
         </header>
 

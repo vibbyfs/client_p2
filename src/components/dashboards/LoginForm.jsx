@@ -9,6 +9,7 @@ import {
   User,
 } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router";
 
 export default function LoginForm() {
   const shouldReduceMotion = useReducedMotion();
@@ -210,12 +211,12 @@ export default function LoginForm() {
 
           <p className="pt-2 text-center text-sm text-neutral-600">
             Belum punya akun?{" "}
-            <a
-              href="#login"
+            <Link
+              to="/register"
               className="font-medium text-orange-700 hover:text-orange-800"
             >
               Daftar
-            </a>
+            </Link>
           </p>
         </form>
       </div>

@@ -1,5 +1,6 @@
 import { BellRing, Menu, PhoneCall, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link, Links } from "react-router";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,7 +25,6 @@ export default function Navbar() {
           {[
             { label: "Fitur", href: "#features" },
             { label: "Cara Kerja", href: "#how-it-works" },
-            { label: "Harga", href: "#pricing" },
             { label: "FAQ", href: "#faq" },
           ].map((n) => (
             <a
@@ -35,12 +35,11 @@ export default function Navbar() {
               {n.label}
             </a>
           ))}
-          <a
-            href="#cta"
-            className="inline-flex items-center gap-2 rounded-xl border border-orange-600 px-3 py-2 text-sm font-medium text-orange-700 transition hover:bg-orange-50"
-          >
-            <PhoneCall className="h-4 w-4" /> Hubungkan WhatsApp
-          </a>
+          <Link to="/login">
+            <button className="inline-flex items-center gap-2 rounded-xl border border-orange-600 px-3 py-2 text-sm font-medium text-orange-700 transition hover:bg-orange-50 cursor-pointer">
+              <PhoneCall className="h-4 w-4" /> Login
+            </button>
+          </Link>
         </div>
 
         {/* Mobile toggle */}

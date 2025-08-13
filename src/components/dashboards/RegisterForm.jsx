@@ -1,6 +1,15 @@
 import { useReducedMotion } from "framer-motion";
-import { ArrowRight, Eye, EyeOff, Lock, Mail, PhoneCall, User } from "lucide-react";
+import {
+  ArrowRight,
+  Eye,
+  EyeOff,
+  Lock,
+  Mail,
+  PhoneCall,
+  User,
+} from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router";
 
 export default function RegisterForm() {
   const shouldReduceMotion = useReducedMotion();
@@ -246,34 +255,6 @@ export default function RegisterForm() {
             )}
           </div>
 
-          {/* Agree */}
-          <div className="flex items-start gap-3">
-            <input
-              id="agree"
-              name="agree"
-              type="checkbox"
-              checked={form.agree}
-              onChange={onChange}
-              className="mt-1 h-4 w-4 rounded border-neutral-300 text-orange-600 focus:ring-orange-500"
-            />
-            <label htmlFor="agree" className="text-sm text-neutral-700">
-              Saya menyetujui{" "}
-              <a
-                href="#"
-                className="font-medium text-orange-700 underline decoration-orange-300 hover:text-orange-800"
-              >
-                Syarat Layanan
-              </a>{" "}
-              dan{" "}
-              <a
-                href="#"
-                className="font-medium text-orange-700 underline decoration-orange-300 hover:text-orange-800"
-              >
-                Kebijakan Privasi
-              </a>
-              .
-            </label>
-          </div>
           {errors.agree && (
             <p className="-mt-2 text-xs text-red-600">{errors.agree}</p>
           )}
@@ -299,12 +280,12 @@ export default function RegisterForm() {
 
           <p className="pt-2 text-center text-sm text-neutral-600">
             Sudah punya akun?{" "}
-            <a
+            <Link
               href="#login"
               className="font-medium text-orange-700 hover:text-orange-800"
             >
               Masuk
-            </a>
+            </Link>
           </p>
         </form>
       </div>

@@ -1,6 +1,7 @@
 import { ArrowRight, BellRing } from "lucide-react";
 import AnimationRegister from "../../components/dashboards/AnimationRegister";
 import RegisterForm from "../../components/dashboards/RegisterForm";
+import { Link } from "react-router";
 
 export default function RegisterPage() {
   function SkipLink() {
@@ -25,12 +26,24 @@ export default function RegisterPage() {
               </div>
               <span className="font-semibold tracking-tight">TemanIngat</span>
             </a>
-            <a
-              href="#login"
-              className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-800 transition hover:bg-neutral-50"
-            >
-              Sudah punya akun? Masuk <ArrowRight className="h-4 w-4" />
-            </a>
+            <div className="hidden items-center gap-6 md:flex">
+              {[{ label: "Back to Home", href: "#features" }].map((n) => (
+                <Link
+                  to="/"
+                  key={n.label}
+                  href={n.href}
+                  className="text-sm text-neutral-700 transition hover:text-orange-700"
+                >
+                  {n.label}
+                </Link>
+              ))}
+              <Link
+                to="/login"
+                className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-800 transition hover:bg-neutral-50"
+              >
+                Sudah punya akun? Masuk <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </nav>
         </header>
 
@@ -38,10 +51,10 @@ export default function RegisterPage() {
           id="home"
           className="mx-auto grid min-h-[calc(100vh-64px)] max-w-7xl grid-cols-1 items-stretch gap-8 px-4 py-8 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:px-8"
         >
-          {/* Left: Animated panel */}
+          {/* Animated panel */}
           <AnimationRegister />
 
-          {/* Right: Register form */}
+          {/* Register form */}
           <RegisterForm />
         </main>
 
