@@ -8,15 +8,18 @@ import Sidebar from "./components/dashboards/Sidebar";
 import Topbar from "./components/dashboards/Topbar";
 import { Outlet } from "react-router";
 import FriendsCMSPage from "./pages/pages_dashboard/FriendsCMSPage";
+import ProfileCMSPage from "./pages/pages_dashboard/ProfileCMSPage";
+import Footer from "./components/publics/Footer";
 
 function DashboardLayout() {
   return (
     <>
-      <div className="min-h-screen bg-neutral-50 text-neutral-800">
-        <Sidebar />
-        <div className="lg:pl-10 pr-10">
-          <Topbar />
-          <Outlet />
+      <Sidebar />
+      <Topbar />
+      <Outlet />
+      <div className="bg-neutral-50 text-neutral-800">
+        <div className="lg:pl-64">
+          <Footer />
         </div>
       </div>
     </>
@@ -39,6 +42,7 @@ function App() {
               element={<RemindersCMSPage />}
             />
             <Route path="/dashboards/friends" element={<FriendsCMSPage />} />
+            <Route path="/dashboards/profiles" element={<ProfileCMSPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

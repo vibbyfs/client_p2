@@ -1,4 +1,4 @@
-import { Phone, UserCheck, UserPlus, Users } from "lucide-react";
+import { Phone, Search, ShieldCheck, UserCheck, UserPlus, Users } from "lucide-react";
 import { useEffect } from "react";
 import { useMemo } from "react";
 import { useRef } from "react";
@@ -139,7 +139,36 @@ export default function FriendsCMSPage() {
       <div className="min-h-screen bg-neutral-50 text-neutral-800">
         <div className="lg:pl-64">
           <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            {/* <Header onQuery={setQuery} /> */}
+            <section className="rounded-2xl border border-orange-100 bg-gradient-to-br from-orange-50 to-white p-5 shadow-sm sm:p-6">
+              <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+                <div>
+                  <h1 className="text-xl font-bold text-neutral-900 sm:text-2xl">
+                    Teman
+                  </h1>
+                  <p className="text-sm text-neutral-700">
+                    Kelola daftar temanmu, kirim undangan, serta terima/tolak
+                    undangan yang masuk.
+                  </p>
+                </div>
+                <div className="relative w-full max-w-md">
+                  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+                  <input
+                    placeholder="Cari id/user/phone/status..."
+                    className="w-full rounded-xl border border-neutral-200 bg-white pl-9 pr-3 py-2 text-sm outline-none placeholder:text-neutral-400 focus:border-orange-500 focus:ring focus:ring-orange-500/20"
+                  />
+                </div>
+              </div>
+              <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-neutral-600">
+                <span className="inline-flex items-center gap-1">
+                  <ShieldCheck className="h-4 w-4 text-orange-600" /> Privasi
+                  terjaga
+                </span>
+                <span className="inline-flex items-center gap-1">
+                  <Users className="h-4 w-4 text-orange-600" /> Undangan via
+                  UserId/Phone
+                </span>
+              </div>
+            </section>
 
             {/* Invite card */}
             <section

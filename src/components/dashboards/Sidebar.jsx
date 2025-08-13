@@ -36,7 +36,11 @@ export default function Sidebar() {
       href: "/dashboards/friends",
       icon: <Users className="h-4 w-4" />,
     },
-    { label: "Profil", href: "/profile", icon: <Edit className="h-4 w-4" /> },
+    {
+      label: "Profil",
+      href: "/dashboards/profiles",
+      icon: <Edit className="h-4 w-4" />,
+    },
   ];
 
   return (
@@ -80,18 +84,6 @@ export default function Sidebar() {
           ))}
         </nav>
         <div className="mt-auto grid gap-2 px-2 pb-4">
-          <a
-            href="/reminders"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-3 py-2 text-sm font-semibold text-white hover:bg-orange-700"
-          >
-            <Plus className="h-4 w-4" /> Buat Reminder
-          </a>
-          <a
-            href="#"
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-800 hover:bg-neutral-50"
-          >
-            <Settings className="h-4 w-4" /> Pengaturan
-          </a>
           <a
             href="/login"
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-800 hover:bg-neutral-50"
@@ -144,13 +136,6 @@ export default function Sidebar() {
                 {it.label}
               </a>
             ))}
-            <a
-              href="/reminders"
-              onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-4 py-3 font-semibold text-white shadow-sm"
-            >
-              <Plus className="h-4 w-4" /> Buat Reminder
-            </a>
           </nav>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { Search, Trash2 } from "lucide-react";
+import { BellRing, Plus, Search, ShieldCheck, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 export default function RemindersCMSPage() {
@@ -136,6 +136,43 @@ export default function RemindersCMSPage() {
       <div className="lg:pl-64">
         <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           {/* <Header /> */}
+          <section className="rounded-2xl border border-orange-100 bg-gradient-to-br from-orange-50 to-white p-5 shadow-sm sm:p-6">
+            <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+              <div>
+                <h1 className="text-xl font-bold text-neutral-900 sm:text-2xl">
+                  Reminder
+                </h1>
+                <p className="text-sm text-neutral-700">
+                  Kelola pengingat aktif, batalkan berdasarkan kebutuhan, dan
+                  refresh data dari backend.
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <a
+                  href="#add"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-700"
+                >
+                  <Plus className="h-4 w-4" /> Tambah Reminder
+                </a>
+                <a
+                  href="/dashboard"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-800 hover:bg-neutral-50"
+                >
+                  Kembali ke Dashboard
+                </a>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-neutral-600">
+              <span className="inline-flex items-center gap-1">
+                <ShieldCheck className="h-4 w-4 text-orange-600" /> Privasi
+                terjaga
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <BellRing className="h-4 w-4 text-orange-600" /> Status: aktif
+                terjadwal
+              </span>
+            </div>
+          </section>
 
           {/* Actions strip */}
           <section className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
