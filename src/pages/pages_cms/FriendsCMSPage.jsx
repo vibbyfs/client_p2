@@ -189,7 +189,7 @@ export default function FriendsCMSPage() {
                   </h2>
                   <button
                     onClick={fetchFriends}
-                    className="text-sm font-medium text-orange-700 hover:text-orange-800"
+                    className="text-sm font-medium text-green-700 hover:text-green-800"
                   >
                     Refresh
                   </button>
@@ -207,7 +207,7 @@ export default function FriendsCMSPage() {
                 )}
 
                 {!loading && !friendsAll.length && !error && (
-                  <div className="mt-4 rounded-xl border border-orange-200 bg-orange-50 p-4 text-sm text-orange-900">
+                  <div className="mt-4 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-900">
                     Belum ada teman yang diterima.
                   </div>
                 )}
@@ -274,13 +274,13 @@ export default function FriendsCMSPage() {
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       placeholder="username teman…"
-                      className="w-full rounded-xl border border-neutral-200 bg-white pl-9 pr-3 py-2 text-sm outline-none placeholder:text-neutral-400 focus:border-orange-500 focus:ring focus:ring-orange-500/20"
+                      className="w-full rounded-xl border border-neutral-200 bg-white pl-9 pr-3 py-2 text-sm outline-none placeholder:text-neutral-400 focus:border-green-600 focus:ring focus:ring-green-600/20"
                     />
                   </div>
                   <button
                     type="submit"
                     disabled={busyInvite || !username}
-                    className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-3 py-2 text-sm font-semibold text-white enabled:hover:bg-orange-700 disabled:opacity-60"
+                    className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-3 py-2 text-sm font-semibold text-white enabled:hover:bg-green-800 disabled:opacity-60"
                   >
                     <UserPlus className="h-4 w-4" /> Kirim Undangan
                   </button>

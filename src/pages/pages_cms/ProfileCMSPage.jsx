@@ -93,7 +93,7 @@ export default function ProfileCMSPage() {
       <div className="lg:pl-64">
         <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           {/* Header */}
-          <section className="rounded-2xl border border-orange-100 bg-gradient-to-br from-orange-50 to-white p-5 shadow-sm sm:p-6">
+          <section className="rounded-2xl border border-green-100 bg-gradient-to-br from-green-50 to-white p-5 shadow-sm sm:p-6">
             <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
               <div>
                 <h1 className="text-xl font-bold text-neutral-900 sm:text-2xl">
@@ -104,7 +104,7 @@ export default function ProfileCMSPage() {
                 </p>
               </div>
               <div className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm">
-                <div className="grid h-7 w-7 place-content-center rounded-full bg-orange-100 text-orange-700">
+                <div className="grid h-7 w-7 place-content-center rounded-full bg-green-100 text-green-700">
                   {String(me?.name || me?.username || "ME")
                     .slice(0, 2)
                     .toUpperCase()}
@@ -113,7 +113,7 @@ export default function ProfileCMSPage() {
               </div>
             </div>
             {info && (
-              <div className="mt-3 rounded-xl border border-orange-200 bg-orange-50 p-3 text-xs text-orange-900">
+              <div className="mt-3 rounded-xl border border-green-200 bg-green-50 p-3 text-xs text-green-900">
                 {info}
               </div>
             )}
@@ -136,7 +136,7 @@ export default function ProfileCMSPage() {
                 ))}
               </div>
             ) : !me ? (
-              <div className="rounded-xl border border-orange-200 bg-orange-50 p-4 text-sm text-orange-900">
+              <div className="rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-900">
                 Profil tidak tersedia.
               </div>
             ) : (
@@ -214,7 +214,7 @@ export default function ProfileCMSPage() {
                           setForm((f) => ({ ...f, name: e.target.value }))
                         }
                         placeholder="Nama"
-                        className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none placeholder:text-neutral-400 focus:border-orange-500 focus:ring focus:ring-orange-500/20"
+                        className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none placeholder:text-neutral-400 focus:border-green-600 focus:ring focus:ring-green-600/20"
                       />
                     </div>
 
@@ -235,7 +235,7 @@ export default function ProfileCMSPage() {
                             setForm((f) => ({ ...f, email: e.target.value }))
                           }
                           placeholder="Email"
-                          className="w-full rounded-xl border border-neutral-200 bg-white pl-9 pr-3 py-2 text-sm outline-none placeholder:text-neutral-400 focus:border-orange-500 focus:ring focus:ring-orange-500/20"
+                          className="w-full rounded-xl border border-neutral-200 bg-white pl-9 pr-3 py-2 text-sm outline-none placeholder:text-neutral-400 focus:border-green-600 focus:ring focus:ring-green-600/20"
                         />
                       </div>
                     </div>
@@ -256,7 +256,7 @@ export default function ProfileCMSPage() {
                             setForm((f) => ({ ...f, phone: e.target.value }))
                           }
                           placeholder="Nomor WhatsApp"
-                          className="w-full rounded-xl border border-neutral-200 bg-white pl-9 pr-3 py-2 text-sm outline-none placeholder:text-neutral-400 focus:border-orange-500 focus:ring focus:ring-orange-500/20"
+                          className="w-full rounded-xl border border-neutral-200 bg-white pl-9 pr-3 py-2 text-sm outline-none placeholder:text-neutral-400 focus:border-green-600 focus:ring focus:ring-green-600/20"
                         />
                       </div>
                     </div>
@@ -276,7 +276,7 @@ export default function ProfileCMSPage() {
                           setForm((f) => ({ ...f, bio: e.target.value }))
                         }
                         placeholder="Sedikit tentang kamu"
-                        className="w-full resize-none rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none placeholder:text-neutral-400 focus:border-orange-500 focus:ring focus:ring-orange-500/20"
+                        className="w-full resize-none rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none placeholder:text-neutral-400 focus:border-green-600 focus:ring focus:ring-green-600/20"
                       />
                     </div>
 
@@ -301,7 +301,7 @@ export default function ProfileCMSPage() {
                         <button
                           type="submit"
                           disabled={saving}
-                          className="inline-flex items-center gap-2 rounded-xl bg-orange-600 px-3 py-2 text-sm font-semibold text-white enabled:hover:bg-orange-700 disabled:opacity-60"
+                          className="inline-flex items-center gap-2 rounded-xl bg-green-700 px-3 py-2 text-sm font-semibold text-white enabled:hover:bg-green-800 disabled:opacity-60"
                         >
                           <Save className="h-4 w-4" />
                           {saving ? "Menyimpan..." : "Simpan Perubahan"}
@@ -311,7 +311,7 @@ export default function ProfileCMSPage() {
 
                     <div className="md:col-span-2 mt-4 flex flex-wrap items-center gap-3 text-xs text-neutral-600">
                       <span className="inline-flex items-center gap-1">
-                        <ShieldCheck className="h-4 w-4 text-orange-600" /> Data
+                        <ShieldCheck className="h-4 w-4 text-green-700" /> Data
                         sensitif (password) tidak ditampilkan
                       </span>
                     </div>

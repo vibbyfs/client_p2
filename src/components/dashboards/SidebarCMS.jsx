@@ -1,18 +1,15 @@
 import {
   BellRing,
-  CalendarClock,
   Edit,
   LogOut,
   Menu,
-  Plus,
-  Settings,
   Sparkles,
   Users,
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export default function Sidebar() {
+export default function SidebarCMS() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -46,7 +43,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile top bar with menu button */}
-      <div className="sticky top-0 z-40 flex items-center justify-between border-b border-orange-100 bg-white px-4 py-3 shadow-sm lg:hidden">
+      <div className="sticky top-0 z-40 flex items-center justify-between border-b border-green-100 bg-white px-4 py-3 shadow-sm lg:hidden">
         <button
           aria-label="Buka menu"
           className="inline-flex items-center justify-center rounded-lg border border-neutral-200 p-2 text-neutral-700"
@@ -55,18 +52,18 @@ export default function Sidebar() {
           <Menu className="h-5 w-5" />
         </button>
         <a href="/dashboard" className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-content-center rounded-xl bg-orange-600 text-white">
+          <div className="grid h-9 w-9 place-content-center rounded-xl bg-green-700 text-white">
             <BellRing className="h-5 w-5" />
           </div>
-          <span className="font-semibold">Remindly</span>
+          <span className="font-semibold text-neutral-900">Remindly</span>
         </a>
-        <span className="text-sm text-neutral-500">Pro</span>
+        {/* <span className="text-sm text-neutral-500">Pro</span> */}
       </div>
 
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-orange-100 bg-white pt-4 shadow-sm lg:flex">
-        <div className="flex items-center gap-2 px-4">
-          <div className="grid h-9 w-9 place-content-center rounded-xl bg-orange-600 text-white">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-green-100 bg-black pt-4 shadow-sm lg:flex">
+        <div className="flex items-center gap-2 px-4 text-white">
+          <div className="grid h-9 w-9 place-content-center rounded-xl bg-black text-white ring-1 ring-white/10">
             <BellRing className="h-5 w-5" />
           </div>
           <span className="font-semibold">Remindly</span>
@@ -76,17 +73,17 @@ export default function Sidebar() {
             <a
               key={it.label}
               href={it.href}
-              className="group flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-neutral-800 hover:bg-orange-50"
+              className="group flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-white hover:bg-green-700"
             >
-              <span className="text-orange-600">{it.icon}</span>
-              <span>{it.label}</span>
+              <span className="text-white">{it.icon}</span>
+              <span className="text-white">{it.label}</span>
             </a>
           ))}
         </nav>
         <div className="mt-auto grid gap-2 px-2 pb-4">
           <a
             href="/login"
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-800 hover:bg-neutral-50"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-green-700 px-3 py-2 text-sm font-semibold text-white hover:bg-green-700"
           >
             <LogOut className="h-4 w-4" /> Keluar
           </a>
@@ -106,20 +103,20 @@ export default function Sidebar() {
           onClick={() => setOpen(false)}
         />
         <div
-          className={`fixed left-0 top-0 z-50 h-full w-[86%] max-w-xs bg-white shadow-xl transition-transform ${
+          className={`fixed left-0 top-0 z-50 h-full w-[86%] max-w-xs bg-black shadow-xl transition-transform ${
             open ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
-            <div className="flex items-center gap-2">
-              <div className="grid h-8 w-8 place-content-center rounded-lg bg-orange-600 text-white">
+          <div className="flex items-center justify-between border-b border-green-100 px-4 py-3">
+            <div className="flex items-center gap-2 text-white">
+              <div className="grid h-8 w-8 place-content-center rounded-lg bg-black text-white ring-1 ring-white/10">
                 <BellRing className="h-4 w-4" />
               </div>
               <span className="font-semibold">Remindly</span>
             </div>
             <button
               aria-label="Tutup menu"
-              className="inline-flex items-center justify-center rounded-lg border border-neutral-200 p-2 text-neutral-700"
+              className="inline-flex items-center justify-center rounded-lg border border-white/20 p-2 text-white"
               onClick={() => setOpen(false)}
             >
               <X className="h-5 w-5" />
@@ -130,7 +127,7 @@ export default function Sidebar() {
               <a
                 key={it.label}
                 href={it.href}
-                className="rounded-lg px-3 py-2 text-base text-neutral-800 hover:bg-orange-50"
+                className="rounded-lg px-3 py-2 text-base text-white hover:bg-green-700"
                 onClick={() => setOpen(false)}
               >
                 {it.label}

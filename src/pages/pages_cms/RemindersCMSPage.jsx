@@ -114,7 +114,7 @@ export default function RemindersCMSPage() {
         <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           {/* Controls */}
           <section className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
-            <div className="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm">
+            <div className="rounded-2xl border border-green-100 bg-white p-4 shadow-sm">
               <label
                 htmlFor="q"
                 className="mb-2 block text-sm font-medium text-neutral-800"
@@ -128,13 +128,13 @@ export default function RemindersCMSPage() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="misal: presentasi"
-                  className="w-full rounded-xl border border-neutral-200 bg-white pl-9 pr-3 py-2 text-sm outline-none placeholder:text-neutral-400 focus:border-orange-500 focus:ring focus:ring-orange-500/20"
+                  className="w-full rounded-xl border border-neutral-200 bg-white pl-9 pr-3 py-2 text-sm outline-none placeholder:text-neutral-400 focus:border-green-600 focus:ring focus:ring-green-600/20"
                 />
               </div>
               <div className="mt-2 flex items-center gap-2">
                 <button
                   onClick={fetchReminders}
-                  className="rounded-xl bg-orange-600 px-3 py-2 text-sm font-semibold text-white hover:bg-orange-700"
+                  className="rounded-xl bg-green-700 px-3 py-2 text-sm font-semibold text-white hover:bg-green-800"
                 >
                   Terapkan ke server
                 </button>
@@ -150,12 +150,12 @@ export default function RemindersCMSPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm">
+            <div className="rounded-2xl border border-green-100 bg-white p-4 shadow-sm">
               <p className="text-sm font-medium text-neutral-800">Filter status</p>
               <select
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                className="mt-2 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none focus:border-orange-500 focus:ring focus:ring-orange-500/20"
+                className="mt-2 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none focus:border-green-600 focus:ring focus:ring-green-600/20"
               >
                 <option value="">Semua</option>
                 <option value="scheduled">Scheduled</option>
@@ -170,7 +170,7 @@ export default function RemindersCMSPage() {
               </button>
             </div>
 
-            <div className="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm">
+            <div className="rounded-2xl border border-green-100 bg-white p-4 shadow-sm">
               <p className="text-sm font-medium text-neutral-800">Urutkan</p>
               <div className="mt-2 grid grid-cols-2 gap-2">
                 <button
@@ -180,7 +180,7 @@ export default function RemindersCMSPage() {
                   }}
                   className={`rounded-xl px-3 py-2 text-sm ${
                     sort === "ASC"
-                      ? "bg-orange-600 text-white"
+                      ? "bg-green-700 text-white"
                       : "border border-neutral-300 text-neutral-800 hover:bg-neutral-50"
                   }`}
                 >
@@ -193,7 +193,7 @@ export default function RemindersCMSPage() {
                   }}
                   className={`rounded-xl px-3 py-2 text-sm ${
                     sort === "DESC"
-                      ? "bg-orange-600 text-white"
+                      ? "bg-green-700 text-white"
                       : "border border-neutral-300 text-neutral-800 hover:bg-neutral-50"
                   }`}
                 >
@@ -211,7 +211,7 @@ export default function RemindersCMSPage() {
               </h2>
               <button
                 onClick={fetchReminders}
-                className="self-start rounded-xl bg-orange-50 px-3 py-2 text-sm font-medium text-orange-700 hover:bg-orange-100 sm:self-auto"
+                className="self-start rounded-xl bg-green-50 px-3 py-2 text-sm font-medium text-green-700 hover:bg-green-100 sm:self-auto"
               >
                 Refresh
               </button>
@@ -235,7 +235,7 @@ export default function RemindersCMSPage() {
             )}
 
             {!loading && !error && localFiltered.length === 0 && (
-              <div className="mt-4 rounded-xl border border-orange-200 bg-orange-50 p-4 text-sm text-orange-900">
+              <div className="mt-4 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-900">
                 Tidak ada data. Ubah pencarian/filter atau buat reminder baru.
               </div>
             )}
@@ -267,7 +267,7 @@ export default function RemindersCMSPage() {
                                 ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                                 : r.status === "cancelled"
                                 ? "bg-neutral-50 text-neutral-700 border border-neutral-200"
-                                : "bg-orange-50 text-orange-700 border border-orange-200"
+                                : "bg-green-50 text-green-700 border border-green-200"
                             }`}
                           >
                             {r.status || "scheduled"}

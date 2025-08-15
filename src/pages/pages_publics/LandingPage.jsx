@@ -5,7 +5,6 @@ import { HeroSection } from "../../components/publics/HeroSection";
 import FeatureSection from "../../components/publics/FeatureSection";
 import { HowItWorksSetion } from "../../components/publics/HowItWorksSection";
 import { CtaSection } from "../../components/publics/CtaSection";
-import PricingAnchor from "../../components/publics/PricingAnchor";
 
 export default function LandingPage() {
   return (
@@ -14,7 +13,6 @@ export default function LandingPage() {
       <HeroSection />
       <FeatureSection />
       <HowItWorksSetion />
-      <PricingAnchor />
       <CtaSection />
       <FAQ />
       <Footer />

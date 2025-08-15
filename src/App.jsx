@@ -1,16 +1,15 @@
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes, Outlet } from "react-router";
 import LandingPage from "./pages/pages_publics/LandingPage";
-import RegisterPage from "./pages/pages_dashboard/RegisterPage";
-import LoginPage from "./pages/pages_dashboard/LoginPage";
-import DashboardCMSPage from "./pages/pages_dashboard/DashboardPage";
-import RemindersCMSPage from "./pages/pages_dashboard/RemindersPage";
-import Sidebar from "./components/dashboards/Sidebar";
-import Topbar from "./components/dashboards/Topbar";
-import { Outlet } from "react-router";
-import FriendsCMSPage from "./pages/pages_dashboard/FriendsCMSPage";
-import ProfileCMSPage from "./pages/pages_dashboard/ProfileCMSPage";
+import RemindersCMSPage from "./pages/pages_cms/RemindersCMSPage";
+import Sidebar from "./components/dashboards/SidebarCMS";
+import Topbar from "./components/dashboards/TopbarCMS";
+import FriendsCMSPage from "./pages/pages_cms/FriendsCMSPage";
+import ProfileCMSPage from "./pages/pages_cms/ProfileCMSPage";
 import Navbar from "./components/dashboards/Navbar";
-import FooterDashboard from "./components/dashboards/FooterDashboard";
+import FooterDashboard from "./components/dashboards/FooterCMS";
+import LoginPage from "./pages/pages_cms/LoginPage";
+import RegisterPage from "./pages/pages_cms/RegisterPage";
+import DashboardCMSPage from "./pages/pages_cms/DashboardCMSPage";
 
 function MainLayout() {
   return (

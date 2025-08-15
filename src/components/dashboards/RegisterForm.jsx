@@ -1,6 +1,6 @@
 "use client";
-import { Label } from "../../components/dashboards/ui_dashboard/Label";
-import { Input } from "../../components/dashboards/ui_dashboard/Input";
+import { Label } from "./ui_cms/LabelEffect";
+import { Input } from "./ui_cms/InputEffect";
 import { cn } from "../../lib/cn";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
