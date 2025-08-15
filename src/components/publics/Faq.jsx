@@ -2,7 +2,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function FAQ() {
   return (
-    <section id="faq" className="py-14 sm:py-16">
+    <section id="faq" className="py-14 sm:py-10">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <h2 className="text-center text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl md:text-4xl">
           Pertanyaan Umum

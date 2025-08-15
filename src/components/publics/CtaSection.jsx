@@ -1,5 +1,5 @@
 "use client";
-import { TypewriterEffectSmooth } from "../../components/publics/ui._publics/CtaSectionEffect.";
+import { TypewriterEffectSmooth } from "./ui_publics/CtaSectionEffect.";
 export function CtaSection() {
   const words = [
     {
@@ -20,8 +20,8 @@ export function CtaSection() {
     },
   ];
   return (
-    <div className="flex flex-col items-center justify-center h-[40rem]  ">
-      <p className="text-black text-xs sm:text-base  ">
+    <div id="cta" className="flex flex-col items-center justify-center h-[20rem] scroll-mt-24 ">
+      <p className="text-black text-xs sm:text-base sm:text-center sm:m-5  ">
         Hubungkan WhatsApp kamu, atur preferensi nada, dan biarkan TemanIngat
         menjaga momen penting—tanpa drama.
       </p>

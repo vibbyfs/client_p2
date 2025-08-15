@@ -58,7 +58,7 @@ export const FeatureSectionEffect = ({
     <div
       ref={containerRef}
       className={cn(
-        "relative h-[80vh] w-full flex items-center justify-center overflow-hidden",
+        "relative h-[50vh] w-full flex items-center justify-center overflow-hidden",
         "mx-auto max-w-7xl",
         className
       )}

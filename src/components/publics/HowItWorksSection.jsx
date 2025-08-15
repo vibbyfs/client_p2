@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Carousel, Card } from "../../components/publics/ui._publics/HowItWorksEffect";
+import { Carousel, Card } from "./ui_publics/HowItWorksEffect";
 
 export function HowItWorksSetion() {
   const cards = data.map((card, index) => (
@@ -9,7 +9,7 @@ export function HowItWorksSetion() {
   ));
 
   return (
-    <div className="w-full h-full py-20">
+    <div id="how-it-works" className="w-full h-full py-10 scroll-mt-24">
       <h2 className="max-w-7xl pl-4 mx-auto text-xl md:text-5xl font-bold text-black font-sans">
         Bagaimana Cara kerjanya?
       </h2>

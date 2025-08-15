@@ -6,13 +6,13 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
-import { FeatureSectionEffect } from "./ui._publics/FeaturesSectionEffect";
+import { FeatureSectionEffect } from "./ui_publics/FeaturesSectionEffect";
 
 export default function FeatureSection() {
   return (
-    <div className="h-screen flex flex-col justify-center items-center px-4">
+    <div id="features" className="h-[60vh] md:h-screen flex flex-col justify-center items-center px-4 scroll-mt-24">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl md:text-4xl">
+        <h2 className="text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl sm:pt-25 md:text-4xl">
           Fitur yang Bikin Tenang
         </h2>
         <p className="mt-3 text-sm text-neutral-700 sm:text-base">

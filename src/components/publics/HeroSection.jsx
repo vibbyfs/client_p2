@@ -2,7 +2,7 @@
 "use client";
 import { useScroll, useTransform } from "motion/react";
 import React from "react";
-import { HomeSectionEffect } from "./ui._publics/HomeSectionEffect";
+import { HomeSectionEffect } from "./ui_publics/HomeSectionEffect";
 
 export function HeroSection({
   title = "Social Reminder via WhatsApp + AI",
@@ -24,7 +24,8 @@ export function HeroSection({
 
   return (
     <div
-      className="h-[400vh] bg-black w-full dark:border dark:border-white/[0.1] rounded-md relative pt-40 overflow-clip"
+      id="home"
+      className="h-[400vh] bg-black w-full dark:border dark:border-white/[0.1] rounded-md relative pt-40 overflow-clip scroll-mt-24"
       ref={ref}
     >
       <HomeSectionEffect

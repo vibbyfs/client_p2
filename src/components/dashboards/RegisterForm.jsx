@@ -1,7 +1,4 @@
 import {
-  ArrowRight,
-  Eye,
-  EyeOff,
   Lock,
   Mail,
   PhoneCall,
