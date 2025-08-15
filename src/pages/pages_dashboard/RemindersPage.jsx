@@ -1,247 +1,217 @@
-import { BellRing, Plus, Search, ShieldCheck, Trash2 } from "lucide-react";
+import { Search } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import http from "../../lib/http";
 
 export default function RemindersCMSPage() {
-  const api = useApiConfig();
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("");
+  const [sort, setSort] = useState("DESC");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [data, setData] = useState({ count: 0, reminders: [] });
-
-  const [keyword, setKeyword] = useState("");
-  const [busyCancel, setBusyCancel] = useState(false);
-
+  const [rows, setRows] = useState([]);
+  const [busyMap, setBusyMap] = useState({});
   const controllerRef = useRef(null);
 
-  function useApiConfig() {
-    // Ganti sesuai routing backend kamu jika berbeda
-    return {
-      getActiveUrl: "/api/reminders/active", // GET
-      cancelByKeywordUrl: "/api/reminders/cancel/keyword", // POST { keyword }
-      cancelRecurringUrl: "/api/reminders/cancel/recurring", // POST
-      cancelAllUrl: "/api/reminders/cancel/all", // POST
-    };
+  const meId =
+    typeof window !== "undefined" && window.__ME_ID__ != null
+      ? Number(window.__ME_ID__)
+      : null;
+
+  function fmt(iso) {
+    if (!iso) return "-";
+    try {
+      return new Intl.DateTimeFormat("id-ID", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(new Date(iso));
+    } catch {
+      return String(iso);
+    }
   }
 
-  const fetchActive = async () => {
+  async function fetchReminders(e) {
+    if (e) e.preventDefault();
     setLoading(true);
     setError("");
     try {
       controllerRef.current?.abort?.();
       controllerRef.current = new AbortController();
-      const res = await fetch(api.getActiveUrl, {
-        method: "GET",
+
+      const response = await http.get("/reminders/actives", {
+        params: { search, filter, sort },
         signal: controllerRef.current.signal,
-        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
-      // Defensive: normalisasi struktur
-      setData({
-        count: json.count ?? (json.reminders?.length || 0),
-        reminders: Array.isArray(json.reminders) ? json.reminders : [],
-      });
-    } catch (e) {
-      setError(e?.message || "Gagal memuat reminder aktif");
+
+      const serverRows = Array.isArray(response.data) ? response.data : [];
+
+      // FE guard tambahan: filter ke user saat ini bila __ME_ID__ tersedia.
+      const scopedRows =
+        meId != null
+          ? serverRows.filter((r) => Number(r.UserId) === meId)
+          : serverRows;
+
+      setRows(scopedRows);
+    } catch (err) {
+      setError(err?.message || "Gagal memuat reminders");
     } finally {
       setLoading(false);
     }
-  };
+  }
+
+  async function handleCancelReminder(id) {
+    setBusyMap((m) => ({ ...m, [id]: true }));
+    try {
+      await http.put(
+        `/reminders/cancel/${id}`,
+        { status: "cancelled" },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+      await fetchReminders();
+    } catch (err) {
+      setError(err?.message || "Gagal membatalkan reminder");
+    } finally {
+      setBusyMap((m) => ({ ...m, [id]: false }));
+    }
+  }
+
+  async function handleDeleteReminder(id) {
+    setBusyMap((m) => ({ ...m, [id]: true }));
+    try {
+      await http.delete(`/reminders/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+      setRows((prev) => prev.filter((r) => r.id !== id));
+    } catch (err) {
+      setError(err?.message || "Gagal menghapus reminder");
+    } finally {
+      setBusyMap((m) => ({ ...m, [id]: false }));
+    }
+  }
 
   useEffect(() => {
-    fetchActive();
+    fetchReminders();
     return () => controllerRef.current?.abort?.();
   }, []);
 
-  const filtered = useMemo(() => {
-    const q = keyword.trim().toLowerCase();
-    if (!q) return data.reminders;
-    return data.reminders.filter((r) =>
-      (r.title || "").toLowerCase().includes(q)
-    );
-  }, [data.reminders, keyword]);
+  const localFiltered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return rows;
+    return rows.filter((r) => (r.title || "").toLowerCase().includes(q));
+  }, [rows, search]);
 
-  const fmt = (iso) => {
-    if (!iso) return "-";
-    try {
-      const date = new Date(iso);
-      return new Intl.DateTimeFormat("id-ID", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      }).format(date);
-    } catch {
-      return String(iso);
-    }
-  };
-
-  // ---- Cancel handlers ----
-  const cancelByKeyword = async (kw) => {
-    if (!kw) return;
-    setBusyCancel(true);
-    setError("");
-    try {
-      const res = await fetch(api.cancelByKeywordUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ keyword: kw }),
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      await res.json();
-      // Optimistic refresh
-      await fetchActive();
-    } catch (e) {
-      setError(e?.message || "Gagal membatalkan reminder (keyword)");
-    } finally {
-      setBusyCancel(false);
-    }
-  };
-
-  const cancelRecurring = async () => {
-    setBusyCancel(true);
-    setError("");
-    try {
-      const res = await fetch(api.cancelRecurringUrl, {
-        method: "POST",
-        credentials: "include",
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      await res.json();
-      await fetchActive();
-    } catch (e) {
-      setError(e?.message || "Gagal membatalkan reminder berulang");
-    } finally {
-      setBusyCancel(false);
-    }
-  };
-
-  const cancelAll = async () => {
-    setBusyCancel(true);
-    setError("");
-    try {
-      const res = await fetch(api.cancelAllUrl, {
-        method: "POST",
-        credentials: "include",
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      await res.json();
-      await fetchActive();
-    } catch (e) {
-      setError(e?.message || "Gagal membatalkan semua reminder");
-    } finally {
-      setBusyCancel(false);
-    }
-  };
   return (
     <div className="min-h-screen bg-neutral-50 text-neutral-800">
       <div className="lg:pl-64">
         <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          {/* <Header /> */}
-          <section className="rounded-2xl border border-orange-100 bg-gradient-to-br from-orange-50 to-white p-5 shadow-sm sm:p-6">
-            <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-              <div>
-                <h1 className="text-xl font-bold text-neutral-900 sm:text-2xl">
-                  Reminder
-                </h1>
-                <p className="text-sm text-neutral-700">
-                  Kelola pengingat aktif, batalkan berdasarkan kebutuhan, dan
-                  refresh data dari backend.
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <a
-                  href="#add"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-700"
-                >
-                  <Plus className="h-4 w-4" /> Tambah Reminder
-                </a>
-                <a
-                  href="/dashboard"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-800 hover:bg-neutral-50"
-                >
-                  Kembali ke Dashboard
-                </a>
-              </div>
-            </div>
-            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-neutral-600">
-              <span className="inline-flex items-center gap-1">
-                <ShieldCheck className="h-4 w-4 text-orange-600" /> Privasi
-                terjaga
-              </span>
-              <span className="inline-flex items-center gap-1">
-                <BellRing className="h-4 w-4 text-orange-600" /> Status: aktif
-                terjadwal
-              </span>
-            </div>
-          </section>
-
-          {/* Actions strip */}
+          {/* Controls */}
           <section className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
             <div className="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm">
               <label
-                htmlFor="kw"
+                htmlFor="q"
                 className="mb-2 block text-sm font-medium text-neutral-800"
               >
-                Batalkan berdasarkan kata kunci
+                Cari judul
               </label>
               <div className="relative">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
                 <input
-                  id="kw"
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
+                  id="q"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                   placeholder="misal: presentasi"
                   className="w-full rounded-xl border border-neutral-200 bg-white pl-9 pr-3 py-2 text-sm outline-none placeholder:text-neutral-400 focus:border-orange-500 focus:ring focus:ring-orange-500/20"
                 />
               </div>
-              <button
-                disabled={!keyword || busyCancel}
-                onClick={() => cancelByKeyword(keyword)}
-                className="mt-2 inline-flex items-center gap-2 rounded-xl bg-orange-600 px-3 py-2 text-sm font-semibold text-white enabled:hover:bg-orange-700 disabled:opacity-60"
+              <div className="mt-2 flex items-center gap-2">
+                <button
+                  onClick={fetchReminders}
+                  className="rounded-xl bg-orange-600 px-3 py-2 text-sm font-semibold text-white hover:bg-orange-700"
+                >
+                  Terapkan ke server
+                </button>
+                <button
+                  onClick={() => {
+                    setSearch("");
+                    fetchReminders();
+                  }}
+                  className="rounded-xl border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm">
+              <p className="text-sm font-medium text-neutral-800">Filter status</p>
+              <select
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                className="mt-2 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none focus:border-orange-500 focus:ring focus:ring-orange-500/20"
               >
-                <Trash2 className="h-4 w-4" /> Batalkan yang cocok
+                <option value="">Semua</option>
+                <option value="scheduled">Scheduled</option>
+                <option value="sent">Sent</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+              <button
+                onClick={fetchReminders}
+                className="mt-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
+              >
+                Terapkan
               </button>
             </div>
+
             <div className="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm">
-              <p className="text-sm font-medium text-neutral-800">
-                Batalkan semua berulang
-              </p>
-              <p className="mt-1 text-xs text-neutral-600">
-                Stop semua reminder dengan repeat ≠ "none".
-              </p>
-              <button
-                disabled={busyCancel}
-                onClick={cancelRecurring}
-                className="mt-2 inline-flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-800 hover:bg-neutral-50 disabled:opacity-60"
-              >
-                <Trash2 className="h-4 w-4" /> Batalkan berulang
-              </button>
-            </div>
-            <div className="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm">
-              <p className="text-sm font-medium text-neutral-800">
-                Batalkan semua aktif
-              </p>
-              <p className="mt-1 text-xs text-neutral-600">
-                Termasuk yang non‑recurring (status: scheduled).
-              </p>
-              <button
-                disabled={busyCancel}
-                onClick={cancelAll}
-                className="mt-2 inline-flex items-center gap-2 rounded-xl border border-red-300 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-100 disabled:opacity-60"
-              >
-                <Trash2 className="h-4 w-4" /> Batalkan semua
-              </button>
+              <p className="text-sm font-medium text-neutral-800">Urutkan</p>
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => {
+                    setSort("ASC");
+                    fetchReminders();
+                  }}
+                  className={`rounded-xl px-3 py-2 text-sm ${
+                    sort === "ASC"
+                      ? "bg-orange-600 text-white"
+                      : "border border-neutral-300 text-neutral-800 hover:bg-neutral-50"
+                  }`}
+                >
+                  Terlama
+                </button>
+                <button
+                  onClick={() => {
+                    setSort("DESC");
+                    fetchReminders();
+                  }}
+                  className={`rounded-xl px-3 py-2 text-sm ${
+                    sort === "DESC"
+                      ? "bg-orange-600 text-white"
+                      : "border border-neutral-300 text-neutral-800 hover:bg-neutral-50"
+                  }`}
+                >
+                  Terbaru
+                </button>
+              </div>
             </div>
           </section>
 
           {/* Table */}
           <section className="mt-6 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <h2 className="text-base font-semibold text-neutral-900">
                 Reminder Aktif
               </h2>
               <button
-                onClick={fetchActive}
-                className="text-sm font-medium text-orange-700 hover:text-orange-800"
+                onClick={fetchReminders}
+                className="self-start rounded-xl bg-orange-50 px-3 py-2 text-sm font-medium text-orange-700 hover:bg-orange-100 sm:self-auto"
               >
                 Refresh
               </button>
@@ -264,19 +234,19 @@ export default function RemindersCMSPage() {
               </div>
             )}
 
-            {!loading && !error && data.count === 0 && (
+            {!loading && !error && localFiltered.length === 0 && (
               <div className="mt-4 rounded-xl border border-orange-200 bg-orange-50 p-4 text-sm text-orange-900">
-                Belum ada reminder aktif. Coba buat baru atau hapus filter kata
-                kunci.
+                Tidak ada data. Ubah pencarian/filter atau buat reminder baru.
               </div>
             )}
 
-            {!loading && !error && data.count > 0 && (
+            {!loading && !error && localFiltered.length > 0 && (
               <div className="mt-3 overflow-x-auto rounded-xl border border-neutral-200">
                 <table className="min-w-full text-left text-sm">
                   <thead className="bg-neutral-50 text-neutral-600">
                     <tr>
                       <th className="px-3 py-2 font-medium">Judul</th>
+                      <th className="px-3 py-2 font-medium">Status</th>
                       <th className="px-3 py-2 font-medium">Jatuh Tempo</th>
                       <th className="px-3 py-2 font-medium">Repeat</th>
                       <th className="px-3 py-2 font-medium">Penerima</th>
@@ -285,10 +255,23 @@ export default function RemindersCMSPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-neutral-200">
-                    {filtered.map((r) => (
+                    {localFiltered.map((r) => (
                       <tr key={r.id} className="hover:bg-neutral-50">
                         <td className="px-3 py-2 text-neutral-800">
                           {r.title}
+                        </td>
+                        <td className="px-3 py-2">
+                          <span
+                            className={`rounded-full px-2 py-1 text-xs ${
+                              r.status === "sent"
+                                ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                                : r.status === "cancelled"
+                                ? "bg-neutral-50 text-neutral-700 border border-neutral-200"
+                                : "bg-orange-50 text-orange-700 border border-orange-200"
+                            }`}
+                          >
+                            {r.status || "scheduled"}
+                          </span>
                         </td>
                         <td className="px-3 py-2 text-neutral-600">
                           {fmt(r.dueAt)}
@@ -297,7 +280,7 @@ export default function RemindersCMSPage() {
                           {r.repeat || "none"}
                         </td>
                         <td className="px-3 py-2 text-neutral-600">
-                          {r.recipientId || "-"}
+                          {r.RecipientId ?? r.recipientId ?? "-"}
                         </td>
                         <td className="px-3 py-2 text-neutral-600">
                           {fmt(r.createdAt)}
@@ -311,11 +294,20 @@ export default function RemindersCMSPage() {
                               Detail
                             </button>
                             <button
-                              disabled={busyCancel}
-                              onClick={() => cancelByKeyword(r.title)}
+                              disabled={
+                                !!busyMap[r.id] || r.status === "cancelled"
+                              }
+                              onClick={() => handleCancelReminder(r.id)}
                               className="rounded-lg border border-red-300 bg-red-50 px-2 py-1 text-xs text-red-700 hover:bg-red-100 disabled:opacity-60"
                             >
-                              Batalkan
+                              Cancel
+                            </button>
+                            <button
+                              disabled={!!busyMap[r.id]}
+                              onClick={() => handleDeleteReminder(r.id)}
+                              className="rounded-lg border border-neutral-300 px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-50"
+                            >
+                              Delete
                             </button>
                           </div>
                         </td>

@@ -10,6 +10,19 @@ import { Outlet } from "react-router";
 import FriendsCMSPage from "./pages/pages_dashboard/FriendsCMSPage";
 import ProfileCMSPage from "./pages/pages_dashboard/ProfileCMSPage";
 import Footer from "./components/publics/Footer";
+import Navbar from "./components/dashboards/Navbar";
+import FooterDashboard from "./components/dashboards/FooterDashboard";
+import FooterMain from "./components/dashboards/FooterMain";
+
+function MainLayout() {
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+      <FooterMain />
+    </>
+  );
+}
 
 function DashboardLayout() {
   return (
@@ -19,7 +32,7 @@ function DashboardLayout() {
       <Outlet />
       <div className="bg-neutral-50 text-neutral-800">
         <div className="lg:pl-64">
-          <Footer />
+          <FooterDashboard />
         </div>
       </div>
     </>
@@ -32,9 +45,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
-
+          <Route element={<MainLayout />}>
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
+          </Route>
           <Route element={<DashboardLayout />}>
             <Route path="/dashboards" element={<DashboardCMSPage />} />
             <Route

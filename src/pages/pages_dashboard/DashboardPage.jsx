@@ -1,8 +1,4 @@
-import { motion, useReducedMotion } from "framer-motion";
 import {
-  BellRing,
-  CalendarClock,
-  CheckCircle2,
   MessageSquareText,
   MoreVertical,
   Plus,
@@ -11,25 +7,6 @@ import {
 } from "lucide-react";
 
 export default function DashboardCMSPage() {
-  const shouldReduceMotion = useReducedMotion();
-  const stats = [
-    {
-      label: "Reminder Aktif",
-      value: 8,
-      icon: <BellRing className="h-5 w-5" />,
-    },
-    {
-      label: "Dikirim Hari Ini",
-      value: 12,
-      icon: <CheckCircle2 className="h-5 w-5" />,
-    },
-    {
-      label: "Akan Datang",
-      value: 5,
-      icon: <CalendarClock className="h-5 w-5" />,
-    },
-    { label: "Teman", value: 23, icon: <Users className="h-5 w-5" /> },
-  ];
   return (
     <>
       <div className="min-h-screen bg-neutral-50 text-neutral-800">
@@ -70,32 +47,6 @@ export default function DashboardCMSPage() {
                   Berbasis WhatsApp
                 </span>
               </div>
-            </section>
-
-            <section className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {stats.map((s) => (
-                <motion.div
-                  key={s.label}
-                  initial={shouldReduceMotion ? false : { opacity: 0, y: 8 }}
-                  whileInView={shouldReduceMotion ? {} : { opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.35 }}
-                  className="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="inline-flex items-center gap-2 text-orange-700">
-                      {s.icon}
-                      <span className="text-sm font-medium text-neutral-800">
-                        {s.label}
-                      </span>
-                    </div>
-                    <MoreVertical className="h-4 w-4 text-neutral-400" />
-                  </div>
-                  <p className="mt-2 text-2xl font-extrabold text-neutral-900">
-                    {s.value}
-                  </p>
-                </motion.div>
-              ))}
             </section>
           </main>
         </div>

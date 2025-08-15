@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { PhoneCall, ShieldCheck, Sparkles } from "lucide-react";
 import { useMemo } from "react";
 
-export default function AnimationRegister() {
+export default function AnimationMain() {
   const shouldReduceMotion = useReducedMotion();
   const bubbles = useMemo(
     () => [
