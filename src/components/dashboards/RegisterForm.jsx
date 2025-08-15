@@ -9,10 +9,10 @@ import http from "../../lib/http";
 export default function RegisterForm() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: "rina",
-    phone: "+6281322915622",
-    email: "rina@mail.com",
-    password: "password",
+    username: "",
+    phone: "",
+    email: "",
+    password: "",
   });
 
   function handleChange(e) {

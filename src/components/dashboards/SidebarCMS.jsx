@@ -83,7 +83,7 @@ export default function SidebarCMS() {
         <div className="mt-auto grid gap-2 px-2 pb-4">
           <a
             href="/login"
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-green-700 px-3 py-2 text-sm font-semibold text-white hover:bg-green-700"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-white bg-white px-3 py-2 text-sm font-semibold text-black hover:bg-green-700 hover:text-white hover:border-green-700"
           >
             <LogOut className="h-4 w-4" /> Keluar
           </a>

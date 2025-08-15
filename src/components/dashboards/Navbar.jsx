@@ -33,7 +33,7 @@ export default function Navbar() {
               to="/register"
       className="inline-flex items-center rounded-xl gap-2 border border-green-700 px-3 py-2 text-sm font-medium text-green-700 transition hover:bg-green-50"
             >
-              Hubungkan Whats App <ArrowRight className="h-4 w-4" />
+              Hubungkan WhatsApp <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </nav>
