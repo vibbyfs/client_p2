@@ -12,7 +12,7 @@ export default function Navbar() {
             </div>
             <span className="font-semibold tracking-tight">TemanIngat</span>
           </a>
-          <div className="hidden items-center gap-6 md:flex">
+          <div className="hidden items-center gap-3 md:flex">
             {[{ label: "Back to Home", href: "#features" }].map((n) => (
               <Link
                 to="/"
@@ -25,9 +25,15 @@ export default function Navbar() {
             ))}
             <Link
               to="/login"
-              className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-800 transition hover:bg-neutral-50"
+              className="inline-flex items-center rounded-xl border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-800 transition hover:bg-neutral-50"
             >
-              Sudah punya akun? Masuk <ArrowRight className="h-4 w-4" />
+              Login
+            </Link>
+            <Link
+              to="/register"
+              className="inline-flex items-center rounded-xl gap-2 border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-800 transition hover:bg-neutral-50"
+            >
+              Hubungkan Whats App <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </nav>
