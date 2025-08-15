@@ -6,63 +6,24 @@ export default function RemindersCMSPage() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("DESC");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [rows, setRows] = useState([]);
-  const [busyMap, setBusyMap] = useState({});
-  const controllerRef = useRef(null);
 
-  const meId =
-    typeof window !== "undefined" && window.__ME_ID__ != null
-      ? Number(window.__ME_ID__)
-      : null;
-
-  function fmt(iso) {
-    if (!iso) return "-";
+  async function fetchReminders() {
     try {
-      return new Intl.DateTimeFormat("id-ID", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      }).format(new Date(iso));
-    } catch {
-      return String(iso);
-    }
-  }
-
-  async function fetchReminders(e) {
-    if (e) e.preventDefault();
-    setLoading(true);
-    setError("");
-    try {
-      controllerRef.current?.abort?.();
-      controllerRef.current = new AbortController();
-
       const response = await http.get("/reminders/actives", {
         params: { search, filter, sort },
-        signal: controllerRef.current.signal,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
       });
 
-      const serverRows = Array.isArray(response.data) ? response.data : [];
-
-      // FE guard tambahan: filter ke user saat ini bila __ME_ID__ tersedia.
-      const scopedRows =
-        meId != null
-          ? serverRows.filter((r) => Number(r.UserId) === meId)
-          : serverRows;
-
-      setRows(scopedRows);
+      setRows(response.data);
     } catch (err) {
-      setError(err?.message || "Gagal memuat reminders");
-    } finally {
-      setLoading(false);
+      console.log("ERROR FETCHING REMINDERS", err);
     }
   }
 
   async function handleCancelReminder(id) {
-    setBusyMap((m) => ({ ...m, [id]: true }));
     try {
       await http.put(
         `/reminders/cancel/${id}`,
@@ -75,14 +36,11 @@ export default function RemindersCMSPage() {
       );
       await fetchReminders();
     } catch (err) {
-      setError(err?.message || "Gagal membatalkan reminder");
-    } finally {
-      setBusyMap((m) => ({ ...m, [id]: false }));
+      console.log("ERROR REMINDER CANCEL", err);
     }
   }
 
   async function handleDeleteReminder(id) {
-    setBusyMap((m) => ({ ...m, [id]: true }));
     try {
       await http.delete(`/reminders/delete/${id}`, {
         headers: {
@@ -91,15 +49,12 @@ export default function RemindersCMSPage() {
       });
       setRows((prev) => prev.filter((r) => r.id !== id));
     } catch (err) {
-      setError(err?.message || "Gagal menghapus reminder");
-    } finally {
-      setBusyMap((m) => ({ ...m, [id]: false }));
+      console.log("ERROR FETCHING REMINDERS DELETE", err);
     }
   }
 
   useEffect(() => {
     fetchReminders();
-    return () => controllerRef.current?.abort?.();
   }, []);
 
   const localFiltered = useMemo(() => {
@@ -133,12 +88,6 @@ export default function RemindersCMSPage() {
               </div>
               <div className="mt-2 flex items-center gap-2">
                 <button
-                  onClick={fetchReminders}
-                  className="rounded-xl bg-green-700 px-3 py-2 text-sm font-semibold text-white hover:bg-green-800"
-                >
-                  Terapkan ke server
-                </button>
-                <button
                   onClick={() => {
                     setSearch("");
                     fetchReminders();
@@ -151,7 +100,9 @@ export default function RemindersCMSPage() {
             </div>
 
             <div className="rounded-2xl border border-green-100 bg-white p-4 shadow-sm">
-              <p className="text-sm font-medium text-neutral-800">Filter status</p>
+              <p className="text-sm font-medium text-neutral-800">
+                Filter status
+              </p>
               <select
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
@@ -217,106 +168,67 @@ export default function RemindersCMSPage() {
               </button>
             </div>
 
-            {loading && (
-              <div className="mt-6 grid gap-3">
-                {[0, 1, 2].map((i) => (
-                  <div
-                    key={i}
-                    className="h-12 animate-pulse rounded-xl bg-neutral-100"
-                  />
-                ))}
-              </div>
-            )}
-
-            {!loading && error && (
-              <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-                {error}
-              </div>
-            )}
-
-            {!loading && !error && localFiltered.length === 0 && (
-              <div className="mt-4 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-900">
-                Tidak ada data. Ubah pencarian/filter atau buat reminder baru.
-              </div>
-            )}
-
-            {!loading && !error && localFiltered.length > 0 && (
-              <div className="mt-3 overflow-x-auto rounded-xl border border-neutral-200">
-                <table className="min-w-full text-left text-sm">
-                  <thead className="bg-neutral-50 text-neutral-600">
-                    <tr>
-                      <th className="px-3 py-2 font-medium">Judul</th>
-                      <th className="px-3 py-2 font-medium">Status</th>
-                      <th className="px-3 py-2 font-medium">Jatuh Tempo</th>
-                      <th className="px-3 py-2 font-medium">Repeat</th>
-                      <th className="px-3 py-2 font-medium">Penerima</th>
-                      <th className="px-3 py-2 font-medium">Dibuat</th>
-                      <th className="px-3 py-2 font-medium">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-neutral-200">
-                    {localFiltered.map((r) => (
-                      <tr key={r.id} className="hover:bg-neutral-50">
-                        <td className="px-3 py-2 text-neutral-800">
-                          {r.title}
-                        </td>
-                        <td className="px-3 py-2">
-                          <span
-                            className={`rounded-full px-2 py-1 text-xs ${
-                              r.status === "sent"
-                                ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                                : r.status === "cancelled"
-                                ? "bg-neutral-50 text-neutral-700 border border-neutral-200"
-                                : "bg-green-50 text-green-700 border border-green-200"
-                            }`}
+            <div className="mt-3 overflow-x-auto rounded-xl border border-neutral-200">
+              <table className="min-w-full text-left text-sm">
+                <thead className="bg-neutral-50 text-neutral-600">
+                  <tr>
+                    <th className="px-3 py-2 font-medium">Judul</th>
+                    <th className="px-3 py-2 font-medium">Status</th>
+                    <th className="px-3 py-2 font-medium">Jatuh Tempo</th>
+                    <th className="px-3 py-2 font-medium">Repeat</th>
+                    <th className="px-3 py-2 font-medium">Penerima</th>
+                    <th className="px-3 py-2 font-medium">Dibuat</th>
+                    <th className="px-3 py-2 font-medium">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-neutral-200">
+                  {localFiltered.map((r) => (
+                    <tr key={r.id} className="hover:bg-neutral-50">
+                      <td className="px-3 py-2 text-neutral-800">{r.title}</td>
+                      <td className="px-3 py-2">
+                        <span
+                          className={`rounded-full px-2 py-1 text-xs ${
+                            r.status === "sent"
+                              ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                              : r.status === "cancelled"
+                              ? "bg-neutral-50 text-neutral-700 border border-neutral-200"
+                              : "bg-green-50 text-green-700 border border-green-200"
+                          }`}
+                        >
+                          {r.status || "scheduled"}
+                        </span>
+                      </td>
+                      <td className="px-3 py-2 text-neutral-600">{r.dueAt}</td>
+                      <td className="px-3 py-2 text-neutral-600">
+                        {r.repeat || "none"}
+                      </td>
+                      <td className="px-3 py-2 text-neutral-600">
+                        {r.RecipientId ?? r.recipientId ?? "-"}
+                      </td>
+                      <td className="px-3 py-2 text-neutral-600">
+                        {r.createdAt}
+                      </td>
+                      <td className="px-3 py-2">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => handleCancelReminder(r.id)}
+                            className="rounded-lg border border-red-300 bg-red-50 px-2 py-1 text-xs text-red-700 hover:bg-red-100 disabled:opacity-60"
                           >
-                            {r.status || "scheduled"}
-                          </span>
-                        </td>
-                        <td className="px-3 py-2 text-neutral-600">
-                          {fmt(r.dueAt)}
-                        </td>
-                        <td className="px-3 py-2 text-neutral-600">
-                          {r.repeat || "none"}
-                        </td>
-                        <td className="px-3 py-2 text-neutral-600">
-                          {r.RecipientId ?? r.recipientId ?? "-"}
-                        </td>
-                        <td className="px-3 py-2 text-neutral-600">
-                          {fmt(r.createdAt)}
-                        </td>
-                        <td className="px-3 py-2">
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => alert(JSON.stringify(r, null, 2))}
-                              className="rounded-lg border border-neutral-300 px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-50"
-                            >
-                              Detail
-                            </button>
-                            <button
-                              disabled={
-                                !!busyMap[r.id] || r.status === "cancelled"
-                              }
-                              onClick={() => handleCancelReminder(r.id)}
-                              className="rounded-lg border border-red-300 bg-red-50 px-2 py-1 text-xs text-red-700 hover:bg-red-100 disabled:opacity-60"
-                            >
-                              Cancel
-                            </button>
-                            <button
-                              disabled={!!busyMap[r.id]}
-                              onClick={() => handleDeleteReminder(r.id)}
-                              className="rounded-lg border border-neutral-300 px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-50"
-                            >
-                              Delete
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                            Cancel
+                          </button>
+                          <button
+                            onClick={() => handleDeleteReminder(r.id)}
+                            className="rounded-lg border border-neutral-300 px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-50"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </section>
         </main>
       </div>
