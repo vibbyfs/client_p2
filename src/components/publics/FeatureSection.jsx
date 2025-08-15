@@ -1,4 +1,3 @@
-import { InfiniteMovingCards } from "../../ui/infinite-moving-cards";
 import {
   BellRing,
   Bot,
@@ -7,11 +6,21 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+import { FeatureSectionEffect } from "./ui._publics/FeaturesSectionEffect";
 
-export default function InfiniteMovingCardsFeatures() {
+export default function FeatureSection() {
   return (
-    <div>
-      <InfiniteMovingCards
+    <div className="h-screen flex flex-col justify-center items-center px-4">
+      <div className="mx-auto max-w-2xl text-center">
+        <h2 className="text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl md:text-4xl">
+          Fitur yang Bikin Tenang
+        </h2>
+        <p className="mt-3 text-sm text-neutral-700 sm:text-base">
+          Dirancang untuk mengingatkan tanpa menggurui—pintar, sopan, dan pas
+          timing-nya.
+        </p>
+      </div>
+      <FeatureSectionEffect
         items={featuresDetail}
         direction="right"
         speed="slow"

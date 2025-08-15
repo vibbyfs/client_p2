@@ -11,10 +11,10 @@ export default function Navbar() {
   }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-orange-100 bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/70">
+    <header className="sticky top-0 z-30 border-b border-green-100 bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/70">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <a href="#home" className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-content-center rounded-xl bg-orange-600 text-white shadow-sm">
+          <div className="grid h-9 w-9 place-content-center rounded-xl bg-green-600 text-white shadow-sm">
             <BellRing className="h-5 w-5" />
           </div>
           <span className="font-semibold tracking-tight">TemanIngat</span>
@@ -30,13 +30,13 @@ export default function Navbar() {
             <a
               key={n.label}
               href={n.href}
-              className="text-sm text-neutral-700 transition hover:text-orange-700"
+              className="text-sm text-neutral-700 transition hover:text-green-700"
             >
               {n.label}
             </a>
           ))}
           <Link to="/login">
-            <button className="inline-flex items-center gap-2 rounded-xl border border-orange-600 px-3 py-2 text-sm font-medium text-orange-700 transition hover:bg-orange-50 cursor-pointer">
+            <button className="inline-flex items-center gap-2 rounded-xl border border-green-600 px-3 py-2 text-sm font-medium text-green-700 transition hover:bg-green-50 cursor-pointer">
               <PhoneCall className="h-4 w-4" /> Login
             </button>
           </Link>
@@ -71,7 +71,7 @@ export default function Navbar() {
         >
           <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
             <div className="flex items-center gap-2">
-              <div className="grid h-8 w-8 place-content-center rounded-lg bg-orange-600 text-white">
+              <div className="grid h-8 w-8 place-content-center rounded-lg bg-green-600 text-white">
                 <BellRing className="h-4 w-4" />
               </div>
               <span className="font-semibold">TemanIngat</span>
@@ -103,7 +103,7 @@ export default function Navbar() {
             <a
               href="#cta"
               onClick={() => setMenuOpen(false)}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-4 py-3 font-semibold text-white shadow-sm hover:bg-orange-700"
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-green-600 px-4 py-3 font-semibold text-white shadow-sm hover:bg-green-700"
             >
               <PhoneCall className="h-4 w-4" /> Hubungkan WhatsApp
             </a>

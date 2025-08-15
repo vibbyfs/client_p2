@@ -1,12 +1,11 @@
 import Navbar from "../../components/publics/Navbar";
-import Hero from "../../components/publics/Hero";
-import Features from "../../components/publics/Features";
-import HowItWorks from "../../components/publics/HowitWorks";
 import FAQ from "../../components/publics/Faq";
-import CTA from "../../components/publics/Cta";
 import Footer from "../../components/publics/Footer";
+import { HeroSection } from "../../components/publics/HeroSection";
+import FeatureSection from "../../components/publics/FeatureSection";
+import { HowItWorksSetion } from "../../components/publics/HowItWorksSection";
+import { CtaSection } from "../../components/publics/CtaSection";
 
-// ---- Aksesibilitas: Skip link ----
 function SkipLink() {
   return (
     <a
@@ -18,7 +17,6 @@ function SkipLink() {
   );
 }
 
-// ---- Background Ornaments (bebas dipindah) ----
 function BackgroundOrnaments() {
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
@@ -55,11 +53,11 @@ export default function LandingPage() {
       <SkipLink />
       <BackgroundOrnaments />
       <Navbar />
-      <Hero />
-      <Features />
-      <HowItWorks />
+      <HeroSection/>
+      <FeatureSection />
+      <HowItWorksSetion />
       <FAQ />
-      <CTA />
+      <CtaSection />
       <Footer />
       <MobileStickyCTA />
     </div>
