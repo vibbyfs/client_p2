@@ -1,122 +1,113 @@
+"use client";
+import { Label } from "../../components/dashboards/ui_dashboard/Label";
+import { Input } from "../../components/dashboards/ui_dashboard/Input";
+import { cn } from "../../lib/cn";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import http from "../../lib/http";
 
-export default function LoginPage() {
+export default function LoginForm() {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [submitting, setSubmitting] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
 
   async function handleLogin(e) {
     e.preventDefault();
-    if (submitting) return;
-
-    setSubmitting(true);
-    setErrorMsg("");
-
     try {
       const res = await http.post("/auth/login", formData);
       localStorage.setItem("access_token", res.data.access_token);
       navigate("/dashboards");
     } catch (err) {
       console.log("ERROR SUBMIT LOGIN", err);
-      setErrorMsg(
-        err?.response?.data?.message ||
-          "Gagal masuk. Periksa email/kata sandi dan coba lagi."
-      );
-    } finally {
-      setSubmitting(false);
     }
   }
 
   return (
-    <div className="min-h-scree flex items-center justify-center px-4">
-      {/* Container putih */}
-      <div className="bg-white rounded-2xl shadow-lg w-full max-w-6xl h-[600px] p-8 md:p-12">
-        {/* Row utama */}
-        <div className="flex h-full items-center justify-center">
-          {/* Kolom Animasi */}
-          {/* <div className="flex items-center justify-center w-[380px]">
-            <Lottie
-              animationData={loadingLoginPage}
-              loop
-              className="w-[320px] h-[320px]"
-            />
-          </div> */}
+    <div className="shadow-input mx-auto w-full max-w-md rounded-2xl bg-white p-10 md:rounded-2xl md:p-8 dark:bg-black md:mt-10">
+      <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
+        Welcome to Aceternity
+      </h2>
+      <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
+        Login to aceternity if you can because we don&apos;t have a login flow
+        yet
+      </p>
+      <form className="my-8" onSubmit={handleLogin}>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="email">Email Address</Label>
+          <Input
+            id="email"
+            placeholder="projectmayhem@fc.com"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, [e.target.name]: e.target.value })
+            }
+          />
+        </LabelInputContainer>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            placeholder="••••••••"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, [e.target.name]: e.target.value })
+            }
+          />
+        </LabelInputContainer>
 
-          {/* Divider tengah */}
-          <div className="mx-28 h-full w-px bg-gray-300" />
+        <button
+          className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset] cursor-pointer"
+          type="submit"
+        >
+          Masuk &rarr;
+          <BottomGradient />
+        </button>
 
-          {/* Kolom Form */}
-          <div className="shrink-0 w-[380px]">
-            <h2 className="text-3xl font-bold text-gray-700 text-center mb-6">
-              Welcome back! Let's spice things up.
-            </h2>
+        <p className="pt-8 text-center text-sm text-neutral-600">
+          Belum punya akun?{" "}
+          <Link
+            to="/register"
+            className="font-medium text-green-600 hover:text-green-500"
+          >
+            Daftar
+          </Link>
+        </p>
 
-            {/* Error message (optional) */}
-            {errorMsg && (
-              <div className="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
-                {errorMsg}
-              </div>
-            )}
+        <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
 
-            <form onSubmit={handleLogin} className="space-y-6">
-              {/* Email */}
-              <div className="relative border border-gray-300 px-3 pt-4 pb-2 rounded">
-                <label
-                  htmlFor="email"
-                  className="absolute text-sm text-gray-500 -top-2 left-2 bg-white px-1"
-                >
-                  Email address
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData((p) => ({ ...p, [e.target.name]: e.target.value }))
-                  }
-                  placeholder="e.g. example@mail.com"
-                  className="w-full bg-transparent outline-none focus:outline-none focus:ring-0 text-sm text-gray-700"
-                  autoComplete="email"
-                  required
-                />
-              </div>
-
-              {/* Password */}
-              <div className="relative border border-gray-300 px-3 pt-4 pb-2 rounded">
-                <label
-                  htmlFor="password"
-                  className="absolute text-sm text-gray-500 -top-2 left-2 bg-white px-1"
-                >
-                  Password
-                </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData((p) => ({ ...p, [e.target.name]: e.target.value }))
-                  }
-                  placeholder="********"
-                  className="w-full bg-transparent outline-none focus:outline-none focus:ring-0 text-sm text-gray-700"
-                  autoComplete="current-password"
-                  required
-                />
-              </div>
-                  <button type="submit">Login</button>
-            </form>
-
-            <Link to="/" className="block mt-4">
-              <button text="Home" />
-            </Link>
-          </div>
-        </div>
-      </div>
+        {/* <div className="flex flex-col space-y-4">
+          <button
+            className="group/btn shadow-input relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626]"
+            type="submit">
+            <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
+            <span className="text-sm text-neutral-700 dark:text-neutral-300">
+              Google
+            </span>
+            <BottomGradient />
+          </button>
+          
+        </div> */}
+      </form>
     </div>
   );
 }
+
+const BottomGradient = () => {
+  return (
+    <>
+      <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
+      <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
+    </>
+  );
+};
+
+const LabelInputContainer = ({ children, className }) => {
+  return (
+    <div className={cn("flex w-full flex-col space-y-2", className)}>
+      {children}
+    </div>
+  );
+};

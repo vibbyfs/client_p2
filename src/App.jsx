@@ -9,17 +9,14 @@ import Topbar from "./components/dashboards/Topbar";
 import { Outlet } from "react-router";
 import FriendsCMSPage from "./pages/pages_dashboard/FriendsCMSPage";
 import ProfileCMSPage from "./pages/pages_dashboard/ProfileCMSPage";
-import Footer from "./components/publics/Footer";
 import Navbar from "./components/dashboards/Navbar";
 import FooterDashboard from "./components/dashboards/FooterDashboard";
-import FooterMain from "./components/dashboards/FooterMain";
 
 function MainLayout() {
   return (
     <>
       <Navbar />
       <Outlet />
-      <FooterMain />
     </>
   );
 }

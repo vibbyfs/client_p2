@@ -1,9 +1,7 @@
-import {
-  Lock,
-  Mail,
-  PhoneCall,
-  User,
-} from "lucide-react";
+"use client";
+import { Label } from "../../components/dashboards/ui_dashboard/Label";
+import { Input } from "../../components/dashboards/ui_dashboard/Input";
+import { cn } from "../../lib/cn";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import http from "../../lib/http";
@@ -17,7 +15,12 @@ export default function RegisterForm() {
     password: "password",
   });
 
-  async function handleSubmitRegister(e) {
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  }
+
+  async function handleRegister(e) {
     e.preventDefault();
     try {
       await http.post("/auth/register", formData);
@@ -29,138 +32,120 @@ export default function RegisterForm() {
   }
 
   return (
-    <section className="order-1 lg:order-2">
-      <div className="mx-auto w-full max-w-lg rounded-3xl border border-orange-200 bg-white p-6 shadow-sm sm:p-8 lg:ml-auto">
-        <div className="flex items-start gap-3">
-          <div className="grid h-10 w-10 place-content-center rounded-xl bg-orange-600 text-white">
-            <User className="h-5 w-5" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900 sm:text-3xl">
-              Buat Akun
-            </h1>
-            <p className="mt-1 text-sm text-neutral-600">
-              Mulai gratis. Bisa diubah ke Pro kapan saja.
-            </p>
-          </div>
+    <div className="shadow-input mx-auto w-full max-w-md rounded-2xl p-10 bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black md:mt-10">
+      <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
+        Welcome to Aceternity
+      </h2>
+      <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
+        Login to aceternity if you can because we don&apos;t have a login flow
+        yet
+      </p>
+      <form className="my-8" onSubmit={handleRegister}>
+        <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+          <LabelInputContainer>
+            <Label htmlFor="username">Username</Label>
+            <Input
+              id="username"
+              name="username"
+              type="text"
+              placeholder="mis. rina"
+              autoComplete="username"
+              required
+              value={formData.username}
+              onChange={handleChange}
+            />
+          </LabelInputContainer>
+          <LabelInputContainer>
+            <Label htmlFor="phone">WhatsApp</Label>
+            <Input
+              id="phone"
+              name="phone"
+              type="tel"
+              inputMode="tel"
+              placeholder="mis. +62812xxxxxxx"
+              autoComplete="tel"
+              required
+              value={formData.phone}
+              onChange={handleChange}
+            />
+          </LabelInputContainer>
         </div>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="email">Email Address</Label>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="projectmayhem@fc.com"
+            autoComplete="email"
+            required
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </LabelInputContainer>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="••••••••"
+            autoComplete="new-password"
+            required
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </LabelInputContainer>
 
-        <form
-          onSubmit={handleSubmitRegister}
-          noValidate
-          className="mt-6 space-y-4"
+        <button
+          className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset] cursor-pointer"
+          type="submit"
         >
-          {/* Name */}
-          <div>
-            <label className="mb-1 block text-sm font-medium text-neutral-800">
-              Username
-            </label>
-            <div className="relative">
-              <input
-                name="username"
-                type="text"
-                required
-                value={formData.username}
-                onChange={(e) =>
-                  setFormData({ ...formData, [e.target.name]: e.target.value })
-                }
-                placeholder="contoh: Rina Hartati"
-              />
-              <User className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
-            </div>
-          </div>
+          Daftar &rarr;
+          <BottomGradient />
+        </button>
 
-          {/* Email */}
-          <div>
-            <label
-              htmlFor="email"
-              className="mb-1 block text-sm font-medium text-neutral-800"
-            >
-              Email
-            </label>
-            <div className="relative">
-              <input
-                name="email"
-                type="email"
-                required
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, [e.target.name]: e.target.value })
-                }
-                placeholder="kamu@contoh.com"
-              />
-              <Mail className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
-            </div>
-          </div>
-
-          {/* Phone */}
-          <div>
-            <label
-              htmlFor="phone"
-              className="mb-1 block text-sm font-medium text-neutral-800"
-            >
-              Nomor WhatsApp
-            </label>
-            <div className="relative">
-              <input
-                name="phone"
-                type="tel"
-                required
-                value={formData.phone}
-                onChange={(e) =>
-                  setFormData({ ...formData, [e.target.name]: e.target.value })
-                }
-                placeholder="contoh: +6281234567890"
-              />
-              <PhoneCall className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
-            </div>
-          </div>
-
-          {/* Password */}
-          <div>
-            <label
-              htmlFor="password"
-              className="mb-1 block text-sm font-medium text-neutral-800"
-            >
-              Kata Sandi
-            </label>
-            <div className="relative">
-              <input
-                name="password"
-                type="password"
-                required
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, [e.target.name]: e.target.value })
-                }
-                placeholder="Minimal 6 karakter"
-              />
-              <button
-                type="button"
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-2 text-neutral-500 hover:bg-neutral-100"
-              ></button>
-              <Lock className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-600 px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-orange-700"
+        <p className="pt-8 text-center text-sm text-neutral-600">
+          Sudah punya akun?{" "}
+          <Link
+            to="/login"
+            className="font-medium text-green-600 hover:text-green-500"
           >
-            Submit
-          </button>
+            Masuk
+          </Link>
+        </p>
 
-          <p className="pt-2 text-center text-sm text-neutral-600">
-            Sudah punya akun?{" "}
-            <Link
-              href="#login"
-              className="font-medium text-orange-700 hover:text-orange-800"
-            >
-              Masuk
-            </Link>
-          </p>
-        </form>
-      </div>
-    </section>
+        <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
+
+        {/* <div className="flex flex-col space-y-4">
+          <button
+            className="group/btn shadow-input relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626]"
+            type="submit">
+            <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
+            <span className="text-sm text-neutral-700 dark:text-neutral-300">
+              Google
+            </span>
+            <BottomGradient />
+          </button>
+        </div> */}
+      </form>
+    </div>
   );
 }
+
+const BottomGradient = () => {
+  return (
+    <>
+      <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
+      <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
+    </>
+  );
+};
+
+const LabelInputContainer = ({ children, className }) => {
+  return (
+    <div className={cn("flex w-full flex-col space-y-2", className)}>
+      {children}
+    </div>
+  );
+};
