@@ -1,13 +1,4 @@
-import {
-  Phone,
-  Search,
-  ShieldCheck,
-  Trash2,
-  UserCheck,
-  UserPlus,
-  Users,
-  UserX,
-} from "lucide-react";
+import { Search, Trash2, UserCheck, UserPlus, UserX } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import http from "../../lib/http";
 
@@ -17,8 +8,6 @@ export default function FriendsCMSPage() {
 
   // data
   const [rows, setRows] = useState([]); // shape from controller mapping
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   // invite
   const [username, setUsername] = useState("");
@@ -29,36 +18,19 @@ export default function FriendsCMSPage() {
 
   const controllerRef = useRef(null);
 
-  async function fetchFriends(e) {
-    if (e) e.preventDefault();
-    setLoading(true);
-    setError("");
+  async function fetchFriends() {
     try {
-      controllerRef.current?.abort?.();
-      controllerRef.current = new AbortController();
       const response = await http.get("/friends", {
         params: { search: q, sort },
-        signal: controllerRef.current.signal,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
       });
-      setRows(Array.isArray(response.data) ? response.data : []);
+      setRows(response.data);
     } catch (err) {
-      setError(
-        err?.response?.data?.message ||
-          err?.message ||
-          "Gagal memuat daftar teman"
-      );
-    } finally {
-      setLoading(false);
+      console.log("ERROR FRIENDS PAGE FETCH", err);
     }
   }
-
-  useEffect(() => {
-    fetchFriends();
-    return () => controllerRef.current?.abort?.();
-  }, []);
 
   // dedupe friends by otherUser.id (hindari dobel username saat relasi 2 arah)
   const friendsAll = useMemo(() => {
@@ -90,28 +62,28 @@ export default function FriendsCMSPage() {
     [rows]
   );
 
-  const fmt = (iso) => {
-    if (!iso) return "-";
-    try {
-      return new Intl.DateTimeFormat("id-ID", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      }).format(new Date(iso));
-    } catch {
-      return String(iso);
-    }
-  };
+  // const fmt = (iso) => {
+  //   if (!iso) return "-";
+  //   try {
+  //     return new Intl.DateTimeFormat("id-ID", {
+  //       dateStyle: "medium",
+  //       timeStyle: "short",
+  //     }).format(new Date(iso));
+  //   } catch {
+  //     return String(iso);
+  //   }
+  // };
 
   // actions
   async function handleInvite(e) {
-    e.preventDefault();
-    if (!username) return;
+    e?.preventDefault?.();
+    const clean = username.trim();
+    if (!clean) return;
     setBusyInvite(true);
-    setError("");
     try {
       await http.post(
         "/friends/request",
-        { username },
+        { username: clean },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -121,10 +93,9 @@ export default function FriendsCMSPage() {
       setUsername("");
       await fetchFriends();
     } catch (err) {
-      setError(
-        err?.response?.data?.message ||
-          err?.message ||
-          "Gagal mengirim undangan"
+      console.log(
+        "ERROR PAGE FRIENNDS HANDLE INVITE",
+        err?.response?.data || err?.message || err
       );
     } finally {
       setBusyInvite(false);
@@ -133,8 +104,6 @@ export default function FriendsCMSPage() {
 
   async function handleRespond(e, id, action) {
     e.preventDefault();
-    setBusyMap((m) => ({ ...m, [id]: true }));
-    setError("");
     try {
       await http.put(
         `/friends/${id}/respond`,
@@ -147,18 +116,11 @@ export default function FriendsCMSPage() {
       );
       await fetchFriends();
     } catch (err) {
-      setError(
-        err?.response?.data?.message || err?.message || `Gagal ${action}`
-      );
-    } finally {
-      setBusyMap((m) => ({ ...m, [id]: false }));
+      console.log("ERROR PAGE FRIENNDS HANDLE RESPON", err);
     }
   }
 
-  async function handleDelete(e, id) {
-    e.preventDefault();
-    setBusyMap((m) => ({ ...m, [id]: true }));
-    setError("");
+  async function handleDelete(id) {
     try {
       await http.delete(`/friends/${id}/delete`, {
         headers: {
@@ -167,13 +129,12 @@ export default function FriendsCMSPage() {
       });
       setRows((prev) => prev.filter((r) => r.id !== id));
     } catch (err) {
-      setError(
-        err?.response?.data?.message || err?.message || `Gagal hapus relasi`
-      );
-    } finally {
-      setBusyMap((m) => ({ ...m, [id]: false }));
+      console.log("ERROR PAGE FRIENDS HANDLE DELETE", err);
     }
   }
+  useEffect(() => {
+    fetchFriends();
+  }, []);
   return (
     <>
       <div className="min-h-screen bg-neutral-50 text-neutral-800">
@@ -189,72 +150,52 @@ export default function FriendsCMSPage() {
                   </h2>
                   <button
                     onClick={fetchFriends}
-                    className="text-sm font-medium text-green-700 hover:text-green-800"
+                    className="self-start rounded-xl bg-green-50 px-3 py-2 text-sm font-medium text-green-700 hover:bg-green-100 sm:self-auto"
                   >
                     Refresh
                   </button>
                 </div>
 
-                {loading && (
-                  <div className="mt-6 grid gap-3">
-                    {[0, 1, 2].map((i) => (
-                      <div
-                        key={i}
-                        className="h-12 animate-pulse rounded-xl bg-neutral-100"
-                      />
-                    ))}
-                  </div>
-                )}
-
-                {!loading && !friendsAll.length && !error && (
-                  <div className="mt-4 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-900">
-                    Belum ada teman yang diterima.
-                  </div>
-                )}
-
-                {!loading && !!friendsAll.length && (
-                  <div className="mt-3 overflow-x-auto rounded-xl border border-neutral-200">
-                    <table className="min-w-full text-left text-sm">
-                      <thead className="bg-neutral-50 text-neutral-600">
-                        <tr>
-                          <th className="px-3 py-2 font-medium">Username</th>
-                          <th className="px-3 py-2 font-medium">Status</th>
-                          <th className="px-3 py-2 font-medium">Dibuat</th>
-                          <th className="px-3 py-2 font-medium">Aksi</th>
+                <div className="mt-3 overflow-x-auto rounded-xl border border-neutral-200">
+                  <table className="min-w-full text-left text-sm">
+                    <thead className="bg-neutral-50 text-neutral-600">
+                      <tr>
+                        <th className="px-3 py-2 font-medium">Username</th>
+                        <th className="px-3 py-2 font-medium">Status</th>
+                        <th className="px-3 py-2 font-medium">Dibuat</th>
+                        <th className="px-3 py-2 font-medium">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-200">
+                      {friendsAll.map((f) => (
+                        <tr
+                          key={f.otherUser.id}
+                          className="hover:bg-neutral-50"
+                        >
+                          <td className="px-3 py-2 text-neutral-800">
+                            {f.otherUser?.username || "-"}
+                          </td>
+                          <td className="px-3 py-2">
+                            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-1 text-xs text-emerald-700">
+                              {f.status}
+                            </span>
+                          </td>
+                          <td className="px-3 py-2 text-neutral-600">
+                            {f.createdAt}
+                          </td>
+                          <td className="px-3 py-2">
+                            <button
+                              onClick={() => handleDelete(f.id)}
+                              className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-2 py-1 text-xs font-semibold text-neutral-800 hover:bg-neutral-50 disabled:opacity-60"
+                            >
+                              <Trash2 className="h-4 w-4" /> Remove
+                            </button>
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody className="divide-y divide-neutral-200">
-                        {friendsAll.map((f) => (
-                          <tr
-                            key={f.otherUser.id}
-                            className="hover:bg-neutral-50"
-                          >
-                            <td className="px-3 py-2 text-neutral-800">
-                              {f.otherUser?.username || "-"}
-                            </td>
-                            <td className="px-3 py-2">
-                              <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-1 text-xs text-emerald-700">
-                                {f.status}
-                              </span>
-                            </td>
-                            <td className="px-3 py-2 text-neutral-600">
-                              {fmt(f.createdAt)}
-                            </td>
-                            <td className="px-3 py-2">
-                              <button
-                                disabled={!!busyMap[f.id]}
-                                onClick={(e) => handleDelete(e, f.id)}
-                                className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-2 py-1 text-xs font-semibold text-neutral-800 hover:bg-neutral-50 disabled:opacity-60"
-                              >
-                                <Trash2 className="h-4 w-4" /> Remove
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
               {/* RIGHT: Requests panel */}
@@ -279,7 +220,6 @@ export default function FriendsCMSPage() {
                   </div>
                   <button
                     type="submit"
-                    disabled={busyInvite || !username}
                     className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-3 py-2 text-sm font-semibold text-white enabled:hover:bg-green-800 disabled:opacity-60"
                   >
                     <UserPlus className="h-4 w-4" /> Kirim Undangan
@@ -307,14 +247,12 @@ export default function FriendsCMSPage() {
                           </span>
                           <div className="flex items-center gap-2">
                             <button
-                              disabled={!!busyMap[r.id]}
                               onClick={(e) => handleRespond(e, r.id, "accept")}
                               className="inline-flex items-center gap-2 rounded-lg border border-emerald-300 bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 disabled:opacity-60"
                             >
                               <UserCheck className="h-4 w-4" /> Accept
                             </button>
                             <button
-                              disabled={!!busyMap[r.id]}
                               onClick={(e) => handleRespond(e, r.id, "reject")}
                               className="inline-flex items-center gap-2 rounded-lg border border-red-300 bg-red-50 px-2 py-1 text-xs font-semibold text-red-700 hover:bg-red-100 disabled:opacity-60"
                             >
@@ -348,8 +286,7 @@ export default function FriendsCMSPage() {
                           </span>
                           <div className="flex items-center gap-2">
                             <button
-                              disabled={!!busyMap[r.id]}
-                              onClick={(e) => handleDelete(e, r.id)}
+                              onClick={() => handleDelete(r.id)}
                               className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-2 py-1 text-xs font-semibold text-neutral-800 hover:bg-neutral-50 disabled:opacity-60"
                             >
                               <Trash2 className="h-4 w-4" /> Cancel
@@ -362,12 +299,6 @@ export default function FriendsCMSPage() {
                 </div>
               </div>
             </section>
-
-            {error && (
-              <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-                {error}
-              </div>
-            )}
           </main>
         </div>
       </div>
