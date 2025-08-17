@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 
 const transition = { duration: 0, ease: "linear" };
 
-export const HomeSectionEffect = ({
+export const HeroSectionEffect = ({
   pathLengths,
   title,
   description,
@@ -27,7 +27,7 @@ export const HomeSectionEffect = ({
       {/* Tombol di tengah area 80vh */}
       <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
         <button className="pointer-events-auto font-bold bg-white rounded-full md:px-4 md:py-2 px-2 py-1 md:mt-24 mt-8 md:text-base text-xs text-black w-fit mx-auto">
-          Connect with TemanIngat
+          Connect with HeyRemindly
         </button>
       </div>
 

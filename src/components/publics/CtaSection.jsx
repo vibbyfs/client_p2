@@ -22,7 +22,7 @@ export function CtaSection() {
   return (
     <div id="cta" className="flex flex-col items-center justify-center h-[20rem] scroll-mt-24 ">
       <p className="text-black text-xs sm:text-base sm:text-center sm:m-5  ">
-        Hubungkan WhatsApp kamu, atur preferensi nada, dan biarkan TemanIngat
+        Hubungkan WhatsApp kamu, atur preferensi nada, dan biarkan HeyRemindly
         menjaga momen penting—tanpa drama.
       </p>
       <TypewriterEffectSmooth words={words} />

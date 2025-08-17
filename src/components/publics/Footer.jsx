@@ -8,7 +8,7 @@ export default function Footer() {
           <div className="grid h-8 w-8 place-content-center rounded-lg bg-green-600 text-white">
             <BellRing className="h-4 w-4" />
           </div>
-          <span className="text-sm font-semibold">TemanIngat</span>
+          <span className="text-sm font-semibold">HeyRemindly</span>
           <span className="text-sm text-neutral-500">© {new Date().getFullYear()}</span>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-neutral-600">

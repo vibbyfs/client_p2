@@ -46,7 +46,7 @@ export default function Navbar() {
           <div className="grid h-9 w-9 place-content-center rounded-xl bg-green-600 text-white shadow-sm">
             <BellRing className="h-5 w-5" />
           </div>
-          <span className="font-semibold tracking-tight">TemanIngat</span>
+          <span className="font-semibold tracking-tight">HeyRemindly</span>
         </a>
 
         {/* Desktop nav */}
@@ -119,7 +119,7 @@ export default function Navbar() {
                 <div className="grid h-8 w-8 place-content-center rounded-lg bg-green-600 text-white">
                   <BellRing className="h-4 w-4" />
                 </div>
-                <span className="font-semibold">TemanIngat</span>
+                <span className="font-semibold">HeyRemindly</span>
               </div>
               <button
                 aria-label="Tutup menu"

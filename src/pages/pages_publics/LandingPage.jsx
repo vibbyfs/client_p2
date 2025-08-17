@@ -5,17 +5,24 @@ import { HeroSection } from "../../components/publics/HeroSection";
 import FeatureSection from "../../components/publics/FeatureSection";
 import { HowItWorksSetion } from "../../components/publics/HowItWorksSection";
 import { CtaSection } from "../../components/publics/CtaSection";
+import { NavbarSection } from "../../components/publics/NavbarSection";
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 via-white to-white text-neutral-800">
-      <Navbar />
+      <NavbarSection />
       <HeroSection />
-      <FeatureSection />
+      <div id="features">
+        <FeatureSection />
+      </div>
       <HowItWorksSetion />
       <CtaSection />
-      <FAQ />
-      <Footer />
+      <div id="faq">
+        <FAQ />
+      </div>
+      <div id="contact">
+        <Footer />
+      </div>
     </div>
   );
 }

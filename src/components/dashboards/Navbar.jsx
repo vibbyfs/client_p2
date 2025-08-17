@@ -10,7 +10,7 @@ export default function Navbar() {
     <div className="grid h-9 w-9 place-content-center rounded-xl bg-green-700 text-white shadow-sm">
               <BellRing className="h-5 w-5" />
             </div>
-            <span className="font-semibold tracking-tight">TemanIngat</span>
+            <span className="font-semibold tracking-tight">HeyRemindly</span>
           </a>
           <div className="hidden items-center gap-3 md:flex">
             {[{ label: "Back to Home", href: "#features" }].map((n) => (

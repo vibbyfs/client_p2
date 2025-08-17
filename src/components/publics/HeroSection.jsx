@@ -2,11 +2,11 @@
 "use client";
 import { useScroll, useTransform } from "motion/react";
 import React from "react";
-import { HomeSectionEffect } from "./ui_publics/HomeSectionEffect";
+import { HeroSectionEffect } from "./ui_publics/HeroSectionEffect";
 
 export function HeroSection({
   title = "Social Reminder via WhatsApp + AI",
-  description = `TemanIngat membantu kamu mengatur janji, to‑do, dan follow‑up—untuk
+  description = `HeyRemindly membantu kamu mengatur janji, to do, dan follow up—untuk
             diri sendiri maupun ke teman—cukup lewat WhatsApp. AI kami paham
             bahasa natural dan menjaga nada komunikasi tetap personal.`,
 }) {
@@ -28,7 +28,7 @@ export function HeroSection({
       className="h-[400vh] bg-black w-full dark:border dark:border-white/[0.1] rounded-md relative pt-40 overflow-clip scroll-mt-24"
       ref={ref}
     >
-      <HomeSectionEffect
+      <HeroSectionEffect
         title={title}
         description={description}
         pathLengths={[
