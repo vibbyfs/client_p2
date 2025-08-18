@@ -1,4 +1,3 @@
-import Navbar from "../../components/publics/Navbar";
 import FAQ from "../../components/publics/Faq";
 import Footer from "../../components/publics/Footer";
 import { HeroSection } from "../../components/publics/HeroSection";

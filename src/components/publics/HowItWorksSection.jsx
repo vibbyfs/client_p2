@@ -1,9 +1,30 @@
 "use client";
 
-import React from "react";
 import { Carousel, Card } from "./ui_publics/HowItWorksEffect";
+import { useState } from "react";
+import { IconX } from "@tabler/icons-react";
+import self_1 from "../../assets/self_1.png";
+import self_2 from "../../assets/self_2.png";
+import friend_1 from "../../assets/firend_1.png";
+import friend_2 from "../../assets/firend_2.png";
+import group from "../../assets/group.png";
+import bgBlack from "../../assets/bg-black.png";
 
 export function HowItWorksSetion() {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openImageModal = (imageSrc) => {
+    setSelectedImage(imageSrc);
+    setIsModalOpen(true);
+  };
+
+  const closeImageModal = () => {
+    setSelectedImage(null);
+    setIsModalOpen(false);
+  };
+
+  const data = getData(openImageModal);
   const cards = data.map((card, index) => (
     <Card key={card.src} card={card} index={index} />
   ));
@@ -14,78 +35,77 @@ export function HowItWorksSetion() {
         Bagaimana Cara kerjanya?
       </h2>
       <Carousel items={cards} />
+      
+      {/* Image Modal */}
+      {isModalOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          onClick={closeImageModal}
+        >
+          <div className="relative max-w-4xl max-h-full">
+            <button
+              onClick={closeImageModal}
+              className="absolute top-4 right-4 text-white hover:text-gray-300 z-60"
+            >
+              <IconX size={24} />
+            </button>
+            <img
+              src={selectedImage}
+              alt="Full size preview"
+              className="max-w-full max-h-[90vh] object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-const DummyContent = () => {
+const DummyContent = ({ imageSrc, onImageClick }) => {
   return (
-    <>
-      {[...new Array(3).fill(1)].map((_, index) => {
-        return (
-          <div
-            key={"dummy-content" + index}
-            className="bg-[#F5F5F7] dark:bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4"
-          >
-            <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
-              <span className="font-bold text-neutral-700 dark:text-neutral-200">
-                The first rule of Apple club is that you boast about Apple club.
-              </span>{" "}
-              Keep a journal, quickly jot down a grocery list, and take amazing
-              class notes. Want to convert those notes to text? No problem.
-              Langotiya jeetu ka mara hua yaar is ready to capture every
-              thought.
-            </p>
-            <img
-              src="https://assets.aceternity.com/macbook.png"
-              alt="Macbook mockup from Aceternity UI"
-              height="500"
-              width="500"
-              className="md:w-1/2 md:h-1/2 h-full w-full mx-auto object-contain"
-            />
-          </div>
-        );
-      })}
-    </>
+    <div className="bg-[#F5F5F7] dark:bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4">
+      <img
+        src={imageSrc}
+        alt="Reminder app interface mockup"
+        height="300"
+        width="300"
+        className="w-3/4 h-auto mx-auto object-contain rounded-lg cursor-pointer hover:scale-105 transition-transform duration-200"
+        onClick={() => onImageClick(imageSrc)}
+      />
+    </div>
   );
 };
 
-const data = [
+const getData = (onImageClick) => [
   {
-    category: "Artificial Intelligence",
-    title: "You can do more with AI.",
-    src: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=3556&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
+    category: "Pill Timer 10 Menit (Self Reminder)",
+    title: "Pengingat WA super cepat—kirim ke dirimu 10 menit dari sekarang agar minum obat selalu tepat waktu. 💊",
+    src: bgBlack,
+    content: <DummyContent imageSrc={self_2} onImageClick={onImageClick} />,
   },
   {
-    category: "Productivity",
-    title: "Enhance your productivity.",
-    src: "https://images.unsplash.com/photo-1531554694128-c4c6665f59c2?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
+    category: "Siram Tanaman Pagi (Self Reminder)",
+    title: "Pengingat WA harian jam 07.00 yang menyapamu tiap pagi dan memastikan tanaman tak pernah terlewat. 🌿",
+    src: bgBlack,
+    content: <DummyContent imageSrc={self_1} onImageClick={onImageClick} />,
   },
   {
-    category: "Product",
-    title: "Launching the new Apple Vision Pro.",
-    src: "https://images.unsplash.com/photo-1713869791518-a770879e60dc?q=80&w=2333&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
-  },
-
-  {
-    category: "Product",
-    title: "Maps for your iPhone 15 Pro Max.",
-    src: "https://images.unsplash.com/photo-1599202860130-f600f4948364?q=80&w=2515&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
+    category: "Split Bill, No Awkward (Friend Reminder)",
+    title: "Follow-up patungan via WA sekitar jam 15.00 dengan pesan halus yang membantu tagih tanpa canggung. 💬",
+    src: bgBlack,
+    content: <DummyContent imageSrc={friend_1} onImageClick={onImageClick} />,
   },
   {
-    category: "iOS",
-    title: "Photography just got better.",
-    src: "https://images.unsplash.com/photo-1602081957921-9137a5d6eaee?q=80&w=2793&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
+    category: "Meeting Ping: Sekali Kirim, Semua Ingat (Friend Reminder - multi)",
+    title: "Satu pengingat WA ke banyak teman sekaligus untuk “Project X” jam 14.00—rapi, sopan, dan tepat waktu. ⏰",
+    src: bgBlack,
+    content: <DummyContent imageSrc={friend_2} onImageClick={onImageClick} />,
   },
   {
-    category: "Hiring",
-    title: "Hiring for a Staff Software Engineer",
-    src: "https://images.unsplash.com/photo-1511984804822-e16ba72f5848?q=80&w=2048&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
+    category: "Standup Autopilot (Group Reminder)",
+    title: "Jadwalkan pengingat WA ke grup tiap Senin 08.20; tim selalu on-track dan ritme kerja terjaga. 📊",
+    src: bgBlack,
+    content: <DummyContent imageSrc={group} onImageClick={onImageClick} />,
   },
 ];

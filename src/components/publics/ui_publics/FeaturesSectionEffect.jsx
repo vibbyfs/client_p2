@@ -46,11 +46,11 @@ export const FeatureSectionEffect = ({
     const dur =
       typeof speed === "number"
         ? `${speed}s`
-        : speed === "fast"
-        ? "12s"
+        : speed === "fast"  
+        ? "10s"
         : speed === "normal"
         ? "24s"
-        : "48s";
+        : "40s";
     containerRef.current.style.setProperty("--animation-duration", dur);
   }
 
@@ -87,22 +87,19 @@ export const FeatureSectionEffect = ({
             key={item.name}
             className={cn(
               "relative w-[350px] max-w-full shrink-0 rounded-2xl",
-              "border border-b-0 border-zinc-200",
-              "bg-[linear-gradient(180deg,#fafafa,#f5f5f5)]",
-              "px-6 py-10 md:w-[450px] md:px-8 md:py-14",
-              "dark:border-zinc-700 dark:bg-[linear-gradient(180deg,#27272a,#18181b)]"
+              "border border-b-0 shadow-md border-zinc-200" 
             )}
           >
-            <blockquote>
-              <span className="relative z-20 text-xl font-normal leading-[1.6] text-neutral-800 dark:text-gray-100">
+            <blockquote className="px-10 py-5">
+              <span className="relative z-20 text-xl font-normal leading-[1.6] text-green-800 pt-10">
                 {item.quote}
               </span>
               <div className="relative z-20 mt-6 flex flex-row items-center">
                 <span className="flex flex-col gap-1">
-                  <span className="text-xl font-normal leading-[1.6] text-neutral-500 dark:text-gray-400">
+                  <span className="text-xl font-bold leading-[1.6] text-neutral-800 ">
                     {item.name}
                   </span>
-                  <span className="text-sm font-normal leading-[1.6] text-neutral-500 dark:text-gray-400">
+                  <span className="text-sm font-normal leading-[1.6] text-gray-800 ">
                     {item.title}
                   </span>
                 </span>
