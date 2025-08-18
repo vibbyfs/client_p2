@@ -1,4 +1,4 @@
-import { Search, Trash2, UserCheck, UserPlus, UserX } from "lucide-react";
+import { IconSearch, IconTrash, IconUserCheck, IconUserPlus, IconUserX } from "@tabler/icons-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import http from "../../lib/http";
 
@@ -188,7 +188,7 @@ export default function FriendsCMSPage() {
                               onClick={() => handleDelete(f.id)}
                               className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-2 py-1 text-xs font-semibold text-neutral-800 hover:bg-neutral-50 disabled:opacity-60"
                             >
-                              <Trash2 className="h-4 w-4" /> Remove
+                              <IconTrash className="h-4 w-4" /> Remove
                             </button>
                           </td>
                         </tr>
@@ -210,7 +210,7 @@ export default function FriendsCMSPage() {
                     Undang via username
                   </label>
                   <div className="relative">
-                    <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+                    <IconSearch className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
                     <input
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
@@ -222,7 +222,7 @@ export default function FriendsCMSPage() {
                     type="submit"
                     className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-3 py-2 text-sm font-semibold text-white enabled:hover:bg-green-800 disabled:opacity-60"
                   >
-                    <UserPlus className="h-4 w-4" /> Kirim Undangan
+                    <IconUserPlus className="h-4 w-4" /> Kirim Undangan
                   </button>
                 </form>
 
@@ -250,13 +250,13 @@ export default function FriendsCMSPage() {
                               onClick={(e) => handleRespond(e, r.id, "accept")}
                               className="inline-flex items-center gap-2 rounded-lg border border-emerald-300 bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 disabled:opacity-60"
                             >
-                              <UserCheck className="h-4 w-4" /> Accept
+                              <IconUserCheck className="h-4 w-4" /> Accept
                             </button>
                             <button
                               onClick={(e) => handleRespond(e, r.id, "reject")}
                               className="inline-flex items-center gap-2 rounded-lg border border-red-300 bg-red-50 px-2 py-1 text-xs font-semibold text-red-700 hover:bg-red-100 disabled:opacity-60"
                             >
-                              <UserX className="h-4 w-4" /> Reject
+                              <IconUserX className="h-4 w-4" /> Reject
                             </button>
                           </div>
                         </li>
@@ -289,7 +289,7 @@ export default function FriendsCMSPage() {
                               onClick={() => handleDelete(r.id)}
                               className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-2 py-1 text-xs font-semibold text-neutral-800 hover:bg-neutral-50 disabled:opacity-60"
                             >
-                              <Trash2 className="h-4 w-4" /> Cancel
+                              <IconTrash className="h-4 w-4" /> Cancel
                             </button>
                           </div>
                         </li>

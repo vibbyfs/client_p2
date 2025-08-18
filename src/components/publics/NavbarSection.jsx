@@ -201,7 +201,7 @@ export function NavbarSection() {
       <Navbar>
         {/* Desktop Navigation */}
         <NavBody>
-          <NavbarLogo />
+          <NavbarLogo isAuthPage={isLoginPage || isRegisterPage} />
           <NavItems
             items={navItems}
             onItemClick={handleNavClick}
@@ -213,7 +213,7 @@ export function NavbarSection() {
         {/* Mobile Navigation */}
         <MobileNav>
           <MobileNavHeader>
-            <NavbarLogo />
+            <NavbarLogo isAuthPage={isLoginPage || isRegisterPage} />
             <MobileNavToggle
               isOpen={isMobileMenuOpen}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

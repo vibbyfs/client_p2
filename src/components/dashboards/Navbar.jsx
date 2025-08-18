@@ -1,4 +1,4 @@
-import { ArrowRight, BellRing } from "lucide-react";
+import { IconArrowRight, IconBell } from "@tabler/icons-react";
 import { Link } from "react-router";
 
 export default function Navbar() {
@@ -8,7 +8,7 @@ export default function Navbar() {
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           <a href="#home" className="flex items-center gap-2">
     <div className="grid h-9 w-9 place-content-center rounded-xl bg-green-700 text-white shadow-sm">
-              <BellRing className="h-5 w-5" />
+              <IconBell className="h-5 w-5" />
             </div>
             <span className="font-semibold tracking-tight">HeyRemindly</span>
           </a>
@@ -33,7 +33,7 @@ export default function Navbar() {
               to="/register"
       className="inline-flex items-center rounded-xl gap-2 border border-green-700 px-3 py-2 text-sm font-medium text-green-700 transition hover:bg-green-50"
             >
-              Hubungkan WhatsApp <ArrowRight className="h-4 w-4" />
+              Hubungkan WhatsApp <IconArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </nav>

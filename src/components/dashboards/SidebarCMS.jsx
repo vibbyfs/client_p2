@@ -1,12 +1,12 @@
 import {
-  BellRing,
-  Edit,
-  LogOut,
-  Menu,
-  Sparkles,
-  Users,
-  X,
-} from "lucide-react";
+  IconBell,
+  IconEdit,
+  IconLogout,
+  IconMenu2,
+  IconSparkles,
+  IconUsers,
+  IconX,
+} from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 
 export default function SidebarCMS() {
@@ -21,22 +21,22 @@ export default function SidebarCMS() {
     {
       label: "Dashboard",
       href: "/dashboards",
-      icon: <Sparkles className="h-4 w-4" />,
+      icon: <IconSparkles className="h-4 w-4" />,
     },
     {
       label: "Reminder",
       href: "/dashboards/reminders",
-      icon: <BellRing className="h-4 w-4" />,
+      icon: <IconBell className="h-4 w-4" />,
     },
     {
       label: "Teman",
       href: "/dashboards/friends",
-      icon: <Users className="h-4 w-4" />,
+      icon: <IconUsers className="h-4 w-4" />,
     },
     {
       label: "Profil",
       href: "/dashboards/profiles",
-      icon: <Edit className="h-4 w-4" />,
+      icon: <IconEdit className="h-4 w-4" />,
     },
   ];
 
@@ -49,11 +49,11 @@ export default function SidebarCMS() {
           className="inline-flex items-center justify-center rounded-lg border border-neutral-200 p-2 text-neutral-700"
           onClick={() => setOpen(true)}
         >
-          <Menu className="h-5 w-5" />
+          <IconMenu2 className="h-5 w-5" />
         </button>
         <a href="/dashboard" className="flex items-center gap-2">
           <div className="grid h-9 w-9 place-content-center rounded-xl bg-green-700 text-white">
-            <BellRing className="h-5 w-5" />
+            <IconBell className="h-5 w-5" />
           </div>
           <span className="font-semibold text-neutral-900">Remindly</span>
         </a>
@@ -64,7 +64,7 @@ export default function SidebarCMS() {
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-green-100 bg-black pt-4 shadow-sm lg:flex">
         <div className="flex items-center gap-2 px-4 text-white">
           <div className="grid h-9 w-9 place-content-center rounded-xl bg-black text-white ring-1 ring-white/10">
-            <BellRing className="h-5 w-5" />
+            <IconBell className="h-5 w-5" />
           </div>
           <span className="font-semibold">Remindly</span>
         </div>
@@ -85,7 +85,7 @@ export default function SidebarCMS() {
             href="/login"
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-white bg-white px-3 py-2 text-sm font-semibold text-black hover:bg-green-700 hover:text-white hover:border-green-700"
           >
-            <LogOut className="h-4 w-4" /> Keluar
+            <IconLogout className="h-4 w-4" /> Keluar
           </a>
         </div>
       </aside>
@@ -110,7 +110,7 @@ export default function SidebarCMS() {
           <div className="flex items-center justify-between border-b border-green-100 px-4 py-3">
             <div className="flex items-center gap-2 text-white">
               <div className="grid h-8 w-8 place-content-center rounded-lg bg-black text-white ring-1 ring-white/10">
-                <BellRing className="h-4 w-4" />
+                <IconBell className="h-4 w-4" />
               </div>
               <span className="font-semibold">Remindly</span>
             </div>
@@ -119,7 +119,7 @@ export default function SidebarCMS() {
               className="inline-flex items-center justify-center rounded-lg border border-white/20 p-2 text-white"
               onClick={() => setOpen(false)}
             >
-              <X className="h-5 w-5" />
+              <IconX className="h-5 w-5" />
             </button>
           </div>
           <nav className="grid gap-1 p-3">

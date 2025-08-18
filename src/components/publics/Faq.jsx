@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { IconArrowRight } from "@tabler/icons-react";
 
 export default function FAQ() {
   return (
@@ -31,7 +31,7 @@ export default function FAQ() {
                 <span className="text-sm font-medium text-neutral-900 sm:text-base">
                   {f.q}
                 </span>
-                <ArrowRight className="h-4 w-4 transition group-open:rotate-90" />
+                <IconArrowRight className="h-4 w-4 transition group-open:rotate-90" />
               </summary>
               <p className="mt-2 text-sm text-neutral-700">{f.a}</p>
               {i < arr.length - 1 && (

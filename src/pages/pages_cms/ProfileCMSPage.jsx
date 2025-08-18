@@ -1,4 +1,4 @@
-import { Mail, Phone, Save, ShieldCheck } from "lucide-react";
+import { IconMail, IconPhone, IconDeviceFloppy, IconShieldCheck } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import http from "../../lib/http";
 
@@ -150,7 +150,7 @@ export default function ProfileCMSPage() {
                         Email
                       </label>
                       <div className="relative">
-                        <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+                        <IconMail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
                         <input
                           id="email"
                           type="email"
@@ -173,7 +173,7 @@ export default function ProfileCMSPage() {
                         Nomor WA
                       </label>
                       <div className="relative">
-                        <Phone className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+                        <IconPhone className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
                         <input
                           id="phone"
                           name="phone"
@@ -218,14 +218,14 @@ export default function ProfileCMSPage() {
                           type="submit"
                           className="inline-flex items-center gap-2 rounded-xl bg-green-700 px-3 py-2 text-sm font-semibold text-white enabled:hover:bg-green-800 disabled:opacity-60"
                         >
-                         Save <Save className="h-4 w-4" />
+                         Save <IconDeviceFloppy className="h-4 w-4" />
                         </button>
                       </div>
                     </div>
 
                     {/* <div className="md:col-span-2 mt-4 flex flex-wrap items-center gap-3 text-xs text-neutral-600">
                       <span className="inline-flex items-center gap-1">
-                        <ShieldCheck className="h-4 w-4 text-green-700" /> Data
+                        <IconShieldCheck className="h-4 w-4 text-green-700" /> Data
                         sensitif (password) tidak ditampilkan
                       </span>
                     </div> */}

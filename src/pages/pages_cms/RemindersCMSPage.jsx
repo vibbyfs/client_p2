@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { IconSearch } from "@tabler/icons-react";
 import { useEffect, useMemo, useState } from "react";
 import http from "../../lib/http";
 
@@ -77,7 +77,7 @@ export default function RemindersCMSPage() {
                 Cari judul
               </label>
               <div className="relative">
-                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+                <IconSearch className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
                 <input
                   id="q"
                   value={search}

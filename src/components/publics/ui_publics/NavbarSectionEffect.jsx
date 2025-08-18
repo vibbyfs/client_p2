@@ -1,7 +1,6 @@
 "use client";
 import { cn } from "../../../lib/cn";
-import { IconMenu2, IconX } from "@tabler/icons-react";
-import { BellRing } from "lucide-react";
+import { IconMenu2, IconX, IconBell } from "@tabler/icons-react";
 import {
   motion,
   AnimatePresence,
@@ -179,14 +178,17 @@ export const MobileNavToggle = ({ isOpen, onClick }) => {
   );
 };
 
-export const NavbarLogo = () => {
+export const NavbarLogo = ({ isAuthPage = false }) => {
   return (
     <a
       href="/"
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
     >
-      <img src={<BellRing />} alt="logo" width={30} height={30} />
-      <span className="font-medium text-black dark:text-white">
+      <IconBell 
+        size={30} 
+        className={isAuthPage ? "text-black" : "text-black dark:text-white"} 
+      />
+      <span className={isAuthPage ? "font-medium text-black" : "font-medium text-black dark:text-white"}>
         HeyRemindly
       </span>
     </a>

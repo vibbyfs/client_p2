@@ -1,9 +1,9 @@
 import {
-  MessageSquareText,
-  Plus,
-  ShieldCheck,
-  Users,
-} from "lucide-react";
+  IconMessage,
+  IconPlus,
+  IconShieldCheck,
+  IconUsers,
+} from "@tabler/icons-react";
 
 export default function DashboardCMSPage() {
   return (
@@ -26,23 +26,23 @@ export default function DashboardCMSPage() {
                     href="/reminders"
                     className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-800"
                   >
-                    <Plus className="h-4 w-4" /> Tambah Reminder
+                    <IconPlus className="h-4 w-4" /> Tambah Reminder
                   </a>
                   <a
                     href="/friends"
                     className="inline-flex items-center justify-center gap-2 rounded-xl border border-green-700 px-4 py-2 text-sm font-semibold text-green-700 hover:bg-green-50"
                   >
-                    <Users className="h-4 w-4" /> Lihat Teman
+                    <IconUsers className="h-4 w-4" /> Lihat Teman
                   </a>
                 </div>
               </div>
               <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-neutral-600">
                 <span className="inline-flex items-center gap-1">
-                  <ShieldCheck className="h-4 w-4 text-green-700" /> Privasi
+                  <IconShieldCheck className="h-4 w-4 text-green-700" /> Privasi
                   terjaga
                 </span>
                 <span className="inline-flex items-center gap-1">
-                  <MessageSquareText className="h-4 w-4 text-green-700" />{" "}
+                  <IconMessage className="h-4 w-4 text-green-700" />{" "}
                   Berbasis WhatsApp
                 </span>
               </div>

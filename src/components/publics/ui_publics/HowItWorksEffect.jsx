@@ -7,10 +7,10 @@ import React, {
   useContext,
 } from "react";
 import {
-  ArrowLeft,
-  ArrowRight,
-  X,
-} from "lucide-react";
+  IconArrowLeft,
+  IconArrowRight,
+  IconX,
+} from "@tabler/icons-react";
 import { cn } from "../../../lib/cn";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "../../../hooks/use-outside-click";
@@ -123,14 +123,14 @@ export const Carousel = ({ items, initialScroll = 0 }) => {
             onClick={scrollLeft}
             disabled={!canScrollLeft}
           >
-            <ArrowLeft className="h-6 w-6 text-gray-500" />
+            <IconArrowLeft className="h-6 w-6 text-gray-500" />
           </button>
           <button
             className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
             onClick={scrollRight}
             disabled={!canScrollRight}
           >
-            <ArrowRight className="h-6 w-6 text-gray-500" />
+            <IconArrowRight className="h-6 w-6 text-gray-500" />
           </button>
         </div>
       </div>
@@ -194,7 +194,7 @@ export const Card = ({ card, index, layout = false }) => {
                 className="sticky top-4 right-0 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-black dark:bg-white"
                 onClick={handleClose}
               >
-                <X className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
+                <IconX className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
               </button>
               <motion.p
                 layoutId={layout ? `category-${card.title}` : undefined}
