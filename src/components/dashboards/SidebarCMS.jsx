@@ -57,6 +57,15 @@ export default function SidebarCMS() {
           </div>
           <span className="font-semibold text-neutral-900">Remindly</span>
         </a>
+        {/* Mobile logout button */}
+        <a
+          href="/login"
+          aria-label="Keluar"
+          title="Keluar"
+          className="inline-flex items-center justify-center rounded-lg border border-neutral-200 p-2 text-neutral-700"
+        >
+          <IconLogout className="h-5 w-5" />
+        </a>
         {/* <span className="text-sm text-neutral-500">Pro</span> */}
       </div>
 
@@ -134,6 +143,16 @@ export default function SidebarCMS() {
               </a>
             ))}
           </nav>
+          {/* Mobile logout at bottom of drawer */}
+          <div className="mt-auto p-3">
+            <a
+              href="/login"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white bg-white px-3 py-2 text-sm font-semibold text-black hover:bg-green-700 hover:text-white hover:border-green-700 w-full"
+              onClick={() => setOpen(false)}
+            >
+              <IconLogout className="h-4 w-4" /> Keluar
+            </a>
+          </div>
         </div>
       </div>
     </>

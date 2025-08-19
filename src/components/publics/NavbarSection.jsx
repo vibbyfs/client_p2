@@ -217,6 +217,7 @@ export function NavbarSection() {
             <MobileNavToggle
               isOpen={isMobileMenuOpen}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              isAuthPage={isLoginPage || isRegisterPage}
             />
           </MobileNavHeader>
 

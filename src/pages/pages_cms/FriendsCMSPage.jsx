@@ -254,7 +254,7 @@ export default function FriendsCMSPage() {
                         <th className="px-3 py-2 font-medium">Username</th>
                         <th className="px-3 py-2 font-medium">Status</th>
                         <th className="px-3 py-2 font-medium">Dibuat</th>
-                        <th className="px-3 py-2 font-medium">Aksi</th>
+                        <th className="px-3 py-2 font-medium text-center">Aksi</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-200">

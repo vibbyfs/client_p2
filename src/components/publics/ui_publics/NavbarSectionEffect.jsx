@@ -170,11 +170,12 @@ export const MobileNavMenu = ({ children, className, isOpen, onClose }) => {
   );
 };
 
-export const MobileNavToggle = ({ isOpen, onClick }) => {
+export const MobileNavToggle = ({ isOpen, onClick, isAuthPage = false }) => {
+  const baseClass = isAuthPage ? "text-black" : "text-black dark:text-white";
   return isOpen ? (
-    <IconX className="text-black dark:text-white" onClick={onClick} />
+    <IconX className={baseClass} onClick={onClick} />
   ) : (
-    <IconMenu2 className="text-black dark:text-white" onClick={onClick} />
+    <IconMenu2 className={baseClass} onClick={onClick} />
   );
 };
 
