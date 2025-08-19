@@ -1,6 +1,17 @@
-import { IconSearch, IconTrash, IconUserCheck, IconUserPlus, IconUserX } from "@tabler/icons-react";
+import {
+  IconMessage,
+  IconPlus,
+  IconSearch,
+  IconShieldCheck,
+  IconTrash,
+  IconUserCheck,
+  IconUserPlus,
+  IconUsers,
+  IconUserX,
+} from "@tabler/icons-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import http from "../../lib/http";
+import { formatToWIBFull } from "../../utils/time";
 
 export default function FriendsCMSPage() {
   const [q, setQ] = useState("");
@@ -50,6 +61,36 @@ export default function FriendsCMSPage() {
     }
     return Array.from(map.values());
   }, [rows]);
+
+  // helper to resolve a date for sorting: try common due-date fields, fallback to createdAt
+  const resolveFriendDate = (f) => {
+    const candidates = [
+      f.dueAt,
+      f.nextDueAt,
+      f.reminderDueAt,
+      f.otherUser?.dueAt,
+      f.createdAt,
+    ];
+    for (const c of candidates) {
+      if (c) {
+        const d = new Date(c);
+        if (!isNaN(d.getTime())) return d.getTime();
+      }
+    }
+    return 0;
+  };
+
+  // sorted version (by resolved date) using `sort` state (ASC = oldest first)
+  const friendsSorted = useMemo(() => {
+    const copy = [...friendsAll];
+    copy.sort((a, b) => {
+      const da = resolveFriendDate(a);
+      const db = resolveFriendDate(b);
+      if (da === db) return 0;
+      return sort === "ASC" ? da - db : db - da;
+    });
+    return copy;
+  }, [friendsAll, sort]);
 
   const incomingPending = useMemo(
     () =>
@@ -140,6 +181,42 @@ export default function FriendsCMSPage() {
       <div className="min-h-screen bg-neutral-50 text-neutral-800">
         <div className="lg:pl-64">
           <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <section className="rounded-2xl border border-green-100 bg-gradient-to-br from-white to-green-50 p-5 shadow-sm sm:p-6">
+              <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+                <div>
+                  <h1 className="text-xl font-bold text-black sm:text-2xl">
+                    Daftar Teman
+                  </h1>
+                  <p className="text-sm text-neutral-700">
+                    Lihat dan kelola semua koneksi kamu di sini.
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <a
+                    href="/reminders"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-800"
+                  >
+                    <IconPlus className="h-4 w-4" /> Tambah Reminder
+                  </a>
+                  <a
+                    href="/friends"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-green-700 px-4 py-2 text-sm font-semibold text-green-700 hover:bg-green-50"
+                  >
+                    <IconUsers className="h-4 w-4" /> Lihat Teman
+                  </a>
+                </div>
+              </div>
+              <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-neutral-600">
+                <span className="inline-flex items-center gap-1">
+                  <IconShieldCheck className="h-4 w-4 text-green-700" /> List Friends
+                  
+                </span>
+                <span className="inline-flex items-center gap-1">
+                  <IconMessage className="h-4 w-4 text-green-700" /> Request
+                  
+                </span>
+              </div>
+            </section>
             {/* grid utama: kiri besar, kanan kecil */}
             <section className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-3">
               {/* LEFT: All Friends table (span 2) */}
@@ -148,12 +225,26 @@ export default function FriendsCMSPage() {
                   <h2 className="text-base font-semibold text-neutral-900">
                     All Friends
                   </h2>
-                  <button
-                    onClick={fetchFriends}
-                    className="self-start rounded-xl bg-green-50 px-3 py-2 text-sm font-medium text-green-700 hover:bg-green-100 sm:self-auto"
-                  >
-                    Refresh
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <label className="text-xs text-neutral-600">Sort</label>
+                    <select
+                      value={sort}
+                      onChange={(e) => {
+                        setSort(e.target.value);
+                        fetchFriends();
+                      }}
+                      className="rounded-xl border border-neutral-200 bg-white px-2 py-1 text-sm outline-none"
+                    >
+                      <option value="DESC">Terbaru</option>
+                      <option value="ASC">Terlama</option>
+                    </select>
+                    <button
+                      onClick={fetchFriends}
+                      className="self-start rounded-xl bg-green-50 px-3 py-2 text-sm font-medium text-green-700 hover:bg-green-100 sm:self-auto"
+                    >
+                      Refresh
+                    </button>
+                  </div>
                 </div>
 
                 <div className="mt-3 overflow-x-auto rounded-xl border border-neutral-200">
@@ -167,7 +258,7 @@ export default function FriendsCMSPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-200">
-                      {friendsAll.map((f) => (
+                      {friendsSorted.map((f) => (
                         <tr
                           key={f.otherUser.id}
                           className="hover:bg-neutral-50"
@@ -181,14 +272,16 @@ export default function FriendsCMSPage() {
                             </span>
                           </td>
                           <td className="px-3 py-2 text-neutral-600">
-                            {f.createdAt}
+                            {formatToWIBFull(f.createdAt)}
                           </td>
-                          <td className="px-3 py-2">
+                          <td className="px-3 py-2 text-center">
                             <button
                               onClick={() => handleDelete(f.id)}
-                              className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-2 py-1 text-xs font-semibold text-neutral-800 hover:bg-neutral-50 disabled:opacity-60"
+                              aria-label="Remove friend"
+                              title="Remove friend"
+                              className="inline-flex items-center justify-center rounded-lg border border-neutral-300 p-2 text-neutral-800 hover:bg-neutral-50 disabled:opacity-60 cursor-pointer"
                             >
-                              <IconTrash className="h-4 w-4" /> Remove
+                              <IconTrash className="h-4 w-4" />
                             </button>
                           </td>
                         </tr>
@@ -287,9 +380,11 @@ export default function FriendsCMSPage() {
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => handleDelete(r.id)}
-                              className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-2 py-1 text-xs font-semibold text-neutral-800 hover:bg-neutral-50 disabled:opacity-60"
+                              aria-label="Cancel request"
+                              title="Cancel request"
+                              className="inline-flex items-center justify-center rounded-lg border border-neutral-300 p-2 text-neutral-800 hover:bg-neutral-50 disabled:opacity-60 cursor-pointer"
                             >
-                              <IconTrash className="h-4 w-4" /> Cancel
+                              <IconTrash className="h-4 w-4" />
                             </button>
                           </div>
                         </li>

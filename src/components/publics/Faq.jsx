@@ -15,15 +15,15 @@ export default function FAQ() {
             },
             {
               q: "Bagaimana cara mengingatkan teman?",
-              a: "Ketik perintah natural dan tag teman, misal: ‘ingatkan @Rina Jumat 19:00 latihan presentasi’. Kami konfirmasi sebelum mengirim.",
+              a: "Ketik perintah natural dan tag teman, misal: 'ingatkan @emily Jumat 19:00 latihan presentasi'. Kami konfirmasi sebelum mengirim.",
             },
             {
               q: "Apakah dataku aman?",
-              a: "Kami menerapkan enkripsi in‑transit serta kontrol privasi granular. Bisa aktifkan auto‑delete.",
+              a: "Kami menerapkan enkripsi in transit serta kontrol privasi granular. Bisa aktifkan auto delete.",
             },
             {
               q: "Bisakah pakai bahasa campur?",
-              a: "Bisa. AI paham bahasa Indonesia sehari‑hari dan istilah Inggris umum.",
+              a: "Bisa. AI paham bahasa Indonesia sehari-hari dan bahasa lainnya.",
             },
           ].map((f, i, arr) => (
             <details key={f.q} className="group p-4 open:bg-neutral-50 sm:p-6">

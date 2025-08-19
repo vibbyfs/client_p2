@@ -6,8 +6,8 @@ import { HeroSectionEffect } from "./ui_publics/HeroSectionEffect";
 
 export function HeroSection({
   title = "Social Reminder via WhatsApp + AI",
-  description = `HeyRemindly membantu kamu mengatur janji, to do, dan follow up—untuk
-            diri sendiri maupun ke teman—cukup lewat WhatsApp. AI kami paham
+  description = `HeyRemindly membantu kamu mengatur janji, to do, dan follow up untuk
+            diri sendiri maupun ke teman cukup lewat WhatsApp. AI kami paham
             bahasa natural dan menjaga nada komunikasi tetap personal.`,
 }) {
   const ref = React.useRef(null);

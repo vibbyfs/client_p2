@@ -1,6 +1,7 @@
 import {
   IconBell,
   IconClock,
+  IconRobot,
   IconShieldCheck,
   IconSparkles,
   IconUsers,
@@ -30,7 +31,7 @@ export default function FeatureSection() {
 
 const featuresDetail = [
   {
-    quote: <IconBell className="h-10 w-10" aria-hidden />,
+    quote: <IconRobot className="h-10 w-10" aria-hidden />,
     name: "AI Parsing Cerdas",
     title:
       "Ketik natural:'ingatkan aku besok 08:00 ambil paket'. AI paham tanggal relatif dan konteks.",

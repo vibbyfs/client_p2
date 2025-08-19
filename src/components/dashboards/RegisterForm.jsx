@@ -33,12 +33,12 @@ export default function RegisterForm() {
 
   return (
     <div className="shadow-input mx-auto w-full max-w-md rounded-2xl p-10 bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black md:mt-10">
-      <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
-        Welcome to Aceternity
+      <h2 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
+        Gabung Bersama Remindly!
       </h2>
       <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
-        Login to aceternity if you can because we don&apos;t have a login flow
-        yet
+        Akun baru, semangat baru. Yuk mulai hari-hari yang lebih teratur dan
+        penuh perhatian bersama Remindly.
       </p>
       <form className="my-8" onSubmit={handleRegister}>
         <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
@@ -48,7 +48,7 @@ export default function RegisterForm() {
               id="username"
               name="username"
               type="text"
-              placeholder="mis. rina"
+              placeholder="mis. emily"
               autoComplete="username"
               required
               value={formData.username}
@@ -71,12 +71,12 @@ export default function RegisterForm() {
           </LabelInputContainer>
         </div>
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Email Address</Label>
+          <Label htmlFor="email">Email</Label>
           <Input
             id="email"
             name="email"
             type="email"
-            placeholder="projectmayhem@fc.com"
+            placeholder="mis. emily@example.com"
             autoComplete="email"
             required
             value={formData.email}

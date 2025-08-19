@@ -1,6 +1,17 @@
-import { IconSearch } from "@tabler/icons-react";
+import {
+  IconMessage,
+  IconPlus,
+  IconSearch,
+  IconShieldCheck,
+  IconUsers,
+  IconClock,
+  IconCheck,
+  IconX,
+  IconTrash,
+} from "@tabler/icons-react";
 import { useEffect, useMemo, useState } from "react";
 import http from "../../lib/http";
+import { formatToWIBFull } from "../../utils/time";
 
 export default function RemindersCMSPage() {
   const [search, setSearch] = useState("");
@@ -67,6 +78,38 @@ export default function RemindersCMSPage() {
     <div className="min-h-screen bg-neutral-50 text-neutral-800">
       <div className="lg:pl-64">
         <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <section className="rounded-2xl border border-green-100 bg-gradient-to-br from-white to-green-50 p-5 shadow-sm sm:p-6">
+            <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+              <div>
+                <h1 className="text-xl font-bold text-black sm:text-2xl">
+                  Kelola Pengingat
+                </h1>
+                <p className="text-sm text-neutral-700">
+                  Semua agenda & tugas yang sudah kamu simpan di sini.
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <a
+                  href="/reminders"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-800"
+                >
+                  <IconPlus className="h-4 w-4" /> Tambah Reminder
+                </a>
+                <a
+                  href="/friends"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-green-700 px-4 py-2 text-sm font-semibold text-green-700 hover:bg-green-50"
+                >
+                  <IconUsers className="h-4 w-4" /> Lihat Teman
+                </a>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-neutral-600">
+              <span className="inline-flex items-center gap-1">
+                <IconShieldCheck className="h-4 w-4 text-green-700" /> Reminder
+                Aktif
+              </span>
+            </div>
+          </section>
           {/* Controls */}
           <section className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
             <div className="rounded-2xl border border-green-100 bg-white p-4 shadow-sm">
@@ -92,7 +135,7 @@ export default function RemindersCMSPage() {
                     setSearch("");
                     fetchReminders();
                   }}
-                  className="rounded-xl border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
+                  className="rounded-xl border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-800 hover:bg-neutral-50 cursor-pointer"
                 >
                   Reset
                 </button>
@@ -115,7 +158,7 @@ export default function RemindersCMSPage() {
               </select>
               <button
                 onClick={fetchReminders}
-                className="mt-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
+                className="mt-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-800 hover:bg-neutral-50 cursor-pointer"
               >
                 Terapkan
               </button>
@@ -129,26 +172,26 @@ export default function RemindersCMSPage() {
                     setSort("ASC");
                     fetchReminders();
                   }}
-                  className={`rounded-xl px-3 py-2 text-sm ${
+                  className={`rounded-xl px-3 py-2 text-sm cursor-pointer ${
                     sort === "ASC"
                       ? "bg-green-700 text-white"
                       : "border border-neutral-300 text-neutral-800 hover:bg-neutral-50"
                   }`}
                 >
-                  Terlama
+                  Terbaru
                 </button>
                 <button
                   onClick={() => {
                     setSort("DESC");
                     fetchReminders();
                   }}
-                  className={`rounded-xl px-3 py-2 text-sm ${
+                  className={`rounded-xl px-3 py-2 text-sm cursor-pointer ${
                     sort === "DESC"
                       ? "bg-green-700 text-white"
                       : "border border-neutral-300 text-neutral-800 hover:bg-neutral-50"
                   }`}
                 >
-                  Terbaru
+                  Terlama
                 </button>
               </div>
             </div>
@@ -162,7 +205,7 @@ export default function RemindersCMSPage() {
               </h2>
               <button
                 onClick={fetchReminders}
-                className="self-start rounded-xl bg-green-50 px-3 py-2 text-sm font-medium text-green-700 hover:bg-green-100 sm:self-auto"
+                className="self-start rounded-xl bg-green-50 px-3 py-2 text-sm font-medium text-green-700 hover:bg-green-100 sm:self-auto cursor-pointer"
               >
                 Refresh
               </button>
@@ -178,7 +221,7 @@ export default function RemindersCMSPage() {
                     <th className="px-3 py-2 font-medium">Repeat</th>
                     <th className="px-3 py-2 font-medium">Penerima</th>
                     <th className="px-3 py-2 font-medium">Dibuat</th>
-                    <th className="px-3 py-2 font-medium">Aksi</th>
+                    <th className="px-3 py-2 font-medium text-center">Aksi</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-neutral-200">
@@ -191,14 +234,38 @@ export default function RemindersCMSPage() {
                             r.status === "sent"
                               ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                               : r.status === "cancelled"
-                              ? "bg-neutral-50 text-neutral-700 border border-neutral-200"
-                              : "bg-green-50 text-green-700 border border-green-200"
+                              ? "bg-red-50 text-red-700 border border-red-200"
+                              : r.status === "scheduled"
+                              ? "bg-amber-50 text-amber-700 border border-amber-200"
+                              : "bg-neutral-50 text-neutral-700 border border-neutral-200"
                           }`}
                         >
-                          {r.status || "scheduled"}
+                          {r.status === "sent" ? (
+                            <>
+                              <IconCheck className="inline-block h-3 w-3 mr-1" />
+                              {r.status}
+                            </>
+                          ) : r.status === "cancelled" ? (
+                            <>
+                              <IconX className="inline-block h-3 w-3 mr-1" />
+                              {r.status}
+                            </>
+                          ) : r.status === "scheduled" ? (
+                            <>
+                              <IconClock className="inline-block h-3 w-3 mr-1" />
+                              {r.status}
+                            </>
+                          ) : (
+                            <>
+                              <IconClock className="inline-block h-3 w-3 mr-1" />
+                              {r.status || "scheduled"}
+                            </>
+                          )}
                         </span>
                       </td>
-                      <td className="px-3 py-2 text-neutral-600">{r.dueAt}</td>
+                      <td className="px-3 py-2 text-neutral-600">
+                        {formatToWIBFull(r.dueAt)}
+                      </td>
                       <td className="px-3 py-2 text-neutral-600">
                         {r.repeat || "none"}
                       </td>
@@ -206,23 +273,27 @@ export default function RemindersCMSPage() {
                         {r.RecipientId ?? r.recipientId ?? "-"}
                       </td>
                       <td className="px-3 py-2 text-neutral-600">
-                        {r.createdAt}
+                        {formatToWIBFull(r.createdAt)}
                       </td>
                       <td className="px-3 py-2">
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() => handleCancelReminder(r.id)}
-                            className="rounded-lg border border-red-300 bg-red-50 px-2 py-1 text-xs text-red-700 hover:bg-red-100 disabled:opacity-60"
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            onClick={() => handleDeleteReminder(r.id)}
-                            className="rounded-lg border border-neutral-300 px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-50"
-                          >
-                            Delete
-                          </button>
-                        </div>
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => handleCancelReminder(r.id)}
+                              aria-label="Cancel reminder"
+                              title="Cancel reminder"
+                              className="rounded-lg border border-red-300 bg-red-50 p-2 text-red-700 hover:bg-red-100 disabled:opacity-60 cursor-pointer"
+                            >
+                              <IconX className="h-4 w-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteReminder(r.id)}
+                              aria-label="Delete reminder"
+                              title="Delete reminder"
+                              className="rounded-lg border border-neutral-300 p-2 text-neutral-800 hover:bg-neutral-50 cursor-pointer"
+                            >
+                              <IconTrash className="h-4 w-4" />
+                            </button>
+                          </div>
                       </td>
                     </tr>
                   ))}

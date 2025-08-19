@@ -23,19 +23,18 @@ export default function LoginForm() {
 
   return (
     <div className="shadow-input mx-auto w-full max-w-md rounded-2xl bg-white p-10 md:rounded-2xl md:p-8 dark:bg-black md:mt-10">
-      <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
-        Welcome to Aceternity
+      <h2 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
+        Selamat Datang Kembali! Kawan Remindly
       </h2>
       <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
-        Login to aceternity if you can because we don&apos;t have a login flow
-        yet
+        Masuk untuk melanjutkan pengingatmu yang penuh makna.
       </p>
       <form className="my-8" onSubmit={handleLogin}>
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Email Address</Label>
+          <Label htmlFor="email">Email</Label>
           <Input
             id="email"
-            placeholder="projectmayhem@fc.com"
+            placeholder="mis. emily@example.com"
             type="email"
             name="email"
             value={formData.email}
