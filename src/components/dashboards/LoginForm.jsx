@@ -2,7 +2,7 @@
 import { Label } from "./ui_cms/LabelEffect";
 import { Input } from "./ui_cms/InputEffect";
 import { cn } from "../../lib/cn";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import http from "../../lib/http";
 
@@ -14,12 +14,45 @@ export default function LoginForm() {
     e.preventDefault();
     try {
       const res = await http.post("/auth/login", formData);
+
       localStorage.setItem("access_token", res.data.access_token);
+
       navigate("/dashboards");
     } catch (err) {
       console.log("ERROR SUBMIT LOGIN", err);
     }
   }
+
+  async function handleCredentialResponse(response) {
+    console.log("Encoded JWT ID token: " + response.credential);
+
+    try {
+      const res = await http.post("/auth/login-google", {
+        id_token: response.credential,
+      });
+
+      localStorage.setItem("access_token", res.data.access_token);
+      if (res.data.user) {
+        localStorage.setItem("UserId", res.data.user.id);
+      }
+
+      navigate("/dashboards/profiles");
+    } catch (err) {
+      console.log("ERROR LOGIN WITH GOOGLE", err);
+    }
+  }
+
+  useEffect(() => {
+    google.accounts.id.initialize({
+      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+      callback: handleCredentialResponse,
+    });
+    google.accounts.id.renderButton(document.getElementById("buttonDiv"), {
+      theme: "outline",
+      size: "large",
+    });
+    // google.accounts.id.prompt();
+  }, []);
 
   return (
     <div className="shadow-input mx-auto w-full max-w-md rounded-2xl bg-white p-10 md:rounded-2xl md:p-8 dark:bg-black md:mt-10">
@@ -38,6 +71,7 @@ export default function LoginForm() {
             type="email"
             name="email"
             value={formData.email}
+            autoComplete="username"
             onChange={(e) =>
               setFormData({ ...formData, [e.target.name]: e.target.value })
             }
@@ -47,6 +81,7 @@ export default function LoginForm() {
           <Label htmlFor="password">Password</Label>
           <Input
             id="password"
+            autoComplete="current-password"
             placeholder="••••••••"
             type="password"
             name="password"
@@ -77,8 +112,12 @@ export default function LoginForm() {
 
         <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
 
-        {/* <div className="flex flex-col space-y-4">
-          <button
+        <div className="flex flex-col space-y-4">
+          <div className="flex justify-center mt-3">
+            <div id="buttonDiv"></div>
+          </div>
+
+          {/* <button
             className="group/btn shadow-input relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626]"
             type="submit">
             <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
@@ -87,8 +126,8 @@ export default function LoginForm() {
             </span>
             <BottomGradient />
           </button>
-          
-        </div> */}
+           */}
+        </div>
       </form>
     </div>
   );

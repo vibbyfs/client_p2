@@ -18,14 +18,13 @@ export default function FriendsCMSPage() {
   const [sort, setSort] = useState("DESC");
 
   // data
-  const [rows, setRows] = useState([]); // shape from controller mapping
+  const [rows, setRows] = useState([]);
 
   // invite
   const [username, setUsername] = useState("");
   const [busyInvite, setBusyInvite] = useState(false);
 
   // busy per row
-  const [busyMap, setBusyMap] = useState({});
 
   const controllerRef = useRef(null);
 
